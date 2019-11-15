@@ -1,0 +1,15 @@
+.solution {
+	display: grid;
+	grid-template-columns: auto auto;
+	grid-template-rows: calc(2vh + 25px) calc(94vh/2 - 35px) calc(94vh/2 - 35px);
+	font-size: calc(1vh + 10px);
+}
+
+.day {
+	grid-column-start: 1;
+	grid-column-end: 3;
+}
+
+.day h1 {
+	margin: 0;
+}

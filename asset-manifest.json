@@ -1,0 +1,21 @@
+{
+  "files": {
+    "main.css": "/aoc19/static/css/main.ea9aedb6.chunk.css",
+    "main.js": "/aoc19/static/js/main.93fe6d21.chunk.js",
+    "main.js.map": "/aoc19/static/js/main.93fe6d21.chunk.js.map",
+    "runtime-main.js": "/aoc19/static/js/runtime-main.0e9c9967.js",
+    "runtime-main.js.map": "/aoc19/static/js/runtime-main.0e9c9967.js.map",
+    "static/js/2.66416352.chunk.js": "/aoc19/static/js/2.66416352.chunk.js",
+    "static/js/2.66416352.chunk.js.map": "/aoc19/static/js/2.66416352.chunk.js.map",
+    "index.html": "/aoc19/index.html",
+    "precache-manifest.26a4a2ebf643950a804c8c6577e90f5a.js": "/aoc19/precache-manifest.26a4a2ebf643950a804c8c6577e90f5a.js",
+    "service-worker.js": "/aoc19/service-worker.js",
+    "static/css/main.ea9aedb6.chunk.css.map": "/aoc19/static/css/main.ea9aedb6.chunk.css.map"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0e9c9967.js",
+    "static/js/2.66416352.chunk.js",
+    "static/css/main.ea9aedb6.chunk.css",
+    "static/js/main.93fe6d21.chunk.js"
+  ]
+}

@@ -7,4 +7,5 @@
 
 .input textarea {
 	flex-grow: 1;
+	resize: none;
 }

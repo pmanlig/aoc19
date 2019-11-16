@@ -37,21 +37,14 @@ let solvers = [
 	{ a: S25a, b: S25b }
 ];
 
-function App() {
+export default function App() {
 	return (
 		<Router basename={`${process.env.PUBLIC_URL}`}>
-			<div className="App">
-				<header className="App-header" onClick={() => window.location.href = "/"}>
-					<h1>Advent of Code 2019</h1>
-				</header>
-				<Switch>
-					<Route path="/:day" render={p => <Solution solvers={solvers} {...p} />} />
-					<Route exact path="/" component={Grid} />
-					<Route path="/" render={p => <h2>404 - this puzzle does not exist!</h2>} />
-				</Switch>
-			</div>
+			<Switch>
+				<Route path="/:day" render={p => <Solution solvers={solvers} {...p} />} />
+				<Route exact path="/" component={Grid} />
+				<Route path="/" render={p => <h2>404 - this puzzle does not exist!</h2>} />
+			</Switch>
 		</Router>
 	);
 }
-
-export default App;

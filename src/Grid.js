@@ -1,6 +1,6 @@
 import './Grid.css'
 import React from 'react'
-import { Link } from 'react-router-dom';
+import AppHeader from './AppHeader';
 
 export class Grid extends React.Component {
 	constructor(props) {
@@ -9,10 +9,13 @@ export class Grid extends React.Component {
 	}
 
 	render() {
-		return <div className="grid">
-			{Array.apply(null, { length: 25 }).map((e, i) =>
-				<div key={i} onClick={e => window.location.href = `/${i + 1}`}>{i + 1}</div>
-			)}
+		return <div className="App">
+			<AppHeader />
+			<div className="grid">
+				{Array.apply(null, { length: 25 }).map((e, i) =>
+					<div key={i} onClick={e => window.location.href = `/${i + 1}`}>{i + 1}</div>
+				)}
+			</div>
 		</div>
 	}
 }

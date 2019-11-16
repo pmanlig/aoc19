@@ -1,15 +1,24 @@
 .solution {
-	display: grid;
-	grid-template-columns: 33vw 33vw 33vw;
-	grid-template-rows: calc(2vh + 35px) calc(94vh - 85px);
-	font-size: calc(1vh + 10px);
+	height: calc(96vh - 50px);
+	display: flex;
+	flex-direction: column;
 }
 
-.day {
-	grid-column-start: 1;
-	grid-column-end: 5;
-}
-
-.day h1 {
+.solution .day h1 {
 	margin: 0;
+	flex-grow: 1;
+}
+
+.solution .day input {
+	display: block;
+	padding: 2px;
+}
+
+.solution .data {
+	flex-grow: 1;
+	display: flex;
+}
+
+.solution > .data > * {
+	flex-grow: 1;
 }

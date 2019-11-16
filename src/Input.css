@@ -1,0 +1,10 @@
+.input {
+	padding: 5px;
+	text-align: left;
+	display: flex;
+	flex-direction: column;
+}
+
+.input textarea {
+	flex-grow: 1;
+}

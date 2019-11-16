@@ -16,6 +16,10 @@
 	margin: 5px;
 }
 
+.App-header:hover {
+	background-color: darkslateblue;
+}
+
 .App-link {
   color: #09d3ac;
 }

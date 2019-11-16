@@ -13,7 +13,7 @@ export class Grid extends React.Component {
 			<AppHeader />
 			<div className="grid">
 				{Array.apply(null, { length: 25 }).map((e, i) =>
-					<div key={i} onClick={e => window.location.href = `/#${i + 1}`}>{i + 1}</div>
+					<div key={i} onClick={e => window.location.href = `${process.env.PUBLIC_URL}/#${i + 1}`}>{i + 1}</div>
 				)}
 			</div>
 		</div>

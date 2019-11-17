@@ -41,7 +41,7 @@ export default function App() {
 	return (
 		<Router basename={`${process.env.PUBLIC_URL}`}>
 			<Switch>
-				<Route path="/:day" render={p => <Solution solvers={solvers} {...p} />} />
+				<Route exact path="/:day" render={p => <Solution solvers={solvers} {...p} />} />
 				<Route exact path="/" component={Grid} />
 				<Route path="/" render={p => <h2>404 - this puzzle does not exist!</h2>} />
 			</Switch>

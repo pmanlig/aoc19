@@ -16,11 +16,19 @@ export class Solution extends React.Component {
 				let res = await fetch(`${this.props.match.params.day}.txt`);
 				if (res.ok) {
 					let txt = await res.text();
-					if (!txt.startsWith("<!DOCTYPE html>"))
+					if (!txt.startsWith("<!DOCTYPE html>")) {
 						this.setState({ input: txt });
+					}
 				}
 			} catch {
 			}
+		}
+	}
+
+	componentDidUpdate(prev) {
+		if (this.props.match.params.day !== prev.match.params.day) {
+			this.setState({ input: "" });
+			this.loadInput();
 		}
 	}
 
@@ -28,7 +36,7 @@ export class Solution extends React.Component {
 		let day = parseInt(this.props.match.params.day);
 
 		if (day < 1 || day > 25) return <div>
-			<AppHeader/>
+			<AppHeader />
 			<h1>404 - No such day in Advent of Code!</h1>
 		</div>
 

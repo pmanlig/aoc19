@@ -1,6 +1,5 @@
 import './Solver.css';
 import React from 'react';
-import { thisExpression } from '@babel/types';
 
 export default class Solver extends React.Component {
 	constructor(props) {

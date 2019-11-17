@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import Solver from './Solver';
 
 export class S6a extends Solver {

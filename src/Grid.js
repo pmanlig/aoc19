@@ -3,11 +3,6 @@ import React from 'react'
 import AppHeader from './AppHeader';
 
 export class Grid extends React.Component {
-	constructor(props) {
-		super(props);
-		// props.match.params.day;
-	}
-
 	render() {
 		return <div className="App">
 			<AppHeader />

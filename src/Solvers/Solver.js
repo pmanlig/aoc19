@@ -1,5 +1,6 @@
 import './Solver.css';
 import React from 'react';
+import { thisExpression } from '@babel/types';
 
 export default class Solver extends React.Component {
 	constructor(props) {
@@ -29,13 +30,19 @@ export default class Solver extends React.Component {
 		this.solve(this.props.input);
 	}
 
+	solution = p => {
+		if (this.customRender) return <this.customRender />;
+		if (!this.state.solution) return false;
+		return this.state.solution.split("\n").map(t => <p>{t}</p>);
+	}
+
 	render() {
 		return <div className="solver">
 			<div className="control">
 				{this.props.header}
 				{this.runControls && <input type="button" value="Solve" onClick={this.run} />}
 			</div>
-			<div className="result">{this.state.solution && this.state.solution.split("\n").map(t => <p>{t}</p>)}</div>
+			<div className="result">{this.customRender ? this.customRender() : <this.solution />}</div>
 		</div>;
 	}
 }

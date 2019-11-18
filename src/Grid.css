@@ -1,7 +1,7 @@
 .grid {
 	display: grid;
 	grid-template-columns: repeat(5, auto);
-	grid-template-rows: repeat(5, calc(96vh/5 - 9px));
+	grid-template-rows: repeat(5, calc(94vh/5 - 7px));
 }
 
 .grid div {

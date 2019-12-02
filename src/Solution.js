@@ -6,18 +6,17 @@ import AppHeader from './AppHeader';
 export class Solution extends React.Component {
 	constructor(props) {
 		super(props);
-		this.state = {};
-		this.loadInput();
+		this.state = { input: null };
 	}
 
-	async loadInput() {
-		if (this.props.match.params.day) {
+	async loadInput(day) {
+		if (day) {
 			try {
 				let res = await fetch(`${this.props.match.params.day}.txt`);
 				if (res.ok) {
 					let txt = await res.text();
 					if (!txt.startsWith("<!DOCTYPE html>")) {
-						this.setState({ input: txt });
+						this.setState({ input: txt, day: this.props.match.params.day });
 					}
 				}
 			} catch {
@@ -25,15 +24,26 @@ export class Solution extends React.Component {
 		}
 	}
 
+	static getDerivedStateFromProps(props, state) {
+		if (state.day !== props.match.params.day) {
+			return { input: null, day: props.match.params.day }
+		}
+		return null;
+	}
+
+	componentDidMount() {
+		this.loadInput(this.props.match.params.day);
+	}
+
 	componentDidUpdate(prev) {
-		if (this.props.match.params.day !== prev.match.params.day) {
-			this.setState({ input: "" });
-			this.loadInput();
+		if (this.state.input === null) {
+			this.loadInput(this.props.match.params.day);
 		}
 	}
 
 	render() {
 		let day = parseInt(this.props.match.params.day);
+		let input = this.state.input;
 
 		if (day < 1 || day > 25) return <div>
 			<AppHeader />
@@ -45,9 +55,9 @@ export class Solution extends React.Component {
 			<AppHeader day={day} />
 			<div className="solution">
 				<div className="data">
-					<Input value={this.state.input} onChange={e => this.setState({ input: e.target.value })} />
-					{s ? <s.a header="Part 1:" input={this.state.input} /> : <div className="part1">part1</div>}
-					{s ? <s.b header="Part 2:" input={this.state.input} /> : <div className="part2">part1</div>}
+					<Input value={input || ""} onChange={e => this.setState({ input: e.target.value })} />
+					{s ? <s.a header="Part 1:" input={input} /> : <div className="part1">part1</div>}
+					{s ? <s.b header="Part 2:" input={input} /> : <div className="part2">part1</div>}
 				</div>
 			</div>
 		</div>

@@ -14,19 +14,23 @@ export default class Solver extends React.Component {
 	}
 
 	componentDidMount() {
-		this.solve(this.props.input);
+		if (this.props.input !== null) {
+			this.solve(this.props.input);
+		}
 	}
 
 	componentDidUpdate(prev) {
-		if (this.props.input !== prev.input) {
+		if (this.props.input !== prev.input && this.props.input !== null) {
 			this.running = false;
 			this.solve(this.props.input);
 		}
 	}
 
 	run = () => {
-		this.running = true;
-		this.solve(this.props.input);
+		if (this.props.input !== null) {
+			this.running = true;
+			this.solve(this.props.input);
+		}
 	}
 
 	solution = p => {

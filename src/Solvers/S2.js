@@ -5,8 +5,10 @@ function calc(input, noun, verb) {
 	if (input === null) return;
 	let mem = input.split(",").map(s => parseInt(s));
 	let ip = 0;
-	mem[1] = noun;
-	mem[2] = verb;
+	if (noun)
+		mem[1] = noun;
+	if (verb)
+		mem[2] = verb;
 	while (mem[ip] !== 99) {
 		let a = mem[ip + 1];
 		let b = mem[ip + 2];
@@ -24,6 +26,8 @@ function calc(input, noun, verb) {
 }
 
 export class S2a extends Solver {
+	// runControls = true;
+
 	async solve(input) {
 		let res = calc(input, 12, 2);
 		this.setState({ solution: res && res.reduce((t, n) => t + ",\n" + n) });
@@ -31,19 +35,18 @@ export class S2a extends Solver {
 }
 
 export class S2b extends Solver {
+	// runControls = true;
+
 	async solve(input) {
-		if (input !== null) {
-			let answer = 0;
-			for (var noun = 0; noun < 100; noun++) {
-				for (var verb = 0; verb < 100; verb++) {
-					let mem = calc(input, noun, verb);
-					if (mem[0] === 19690720) {
-						answer = 100 * noun + verb;
-						this.setState({ solution: `Answer: ${answer}\n` + mem.reduce((t, n) => t + ",\n" + n) });
-					}
+		let answer = 0;
+		for (var noun = 0; noun < 100; noun++) {
+			for (var verb = 0; verb < 100; verb++) {
+				let mem = calc(input, noun, verb);
+				if (mem[0] === 19690720) {
+					answer = 100 * noun + verb;
+					this.setState({ solution: `Answer: ${answer}\n` + mem.reduce((t, n) => t + ",\n" + n) });
 				}
 			}
-		} else
-			this.setState({ solution: input });
+		}
 	}
 }

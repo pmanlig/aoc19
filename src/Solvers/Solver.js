@@ -15,22 +15,26 @@ export default class Solver extends React.Component {
 
 	componentDidMount() {
 		if (this.props.input !== null) {
-			this.solve(this.props.input);
+			this.run(false);
 		}
 	}
 
 	componentDidUpdate(prev) {
 		if (this.props.input !== prev.input && this.props.input !== null) {
-			this.running = false;
-			this.solve(this.props.input);
+			this.run(false);
 		}
 	}
 
-	run = () => {
-		if (this.props.input !== null) {
-			this.running = true;
-			this.solve(this.props.input);
+	run(auto) {
+		if (this.runControls) {
+			this.running = auto;
+			if (!this.running)
+				return;
 		}
+		if (this.props.input === null)
+			return;
+
+		this.solve(this.props.input);
 	}
 
 	solution = p => {
@@ -44,7 +48,7 @@ export default class Solver extends React.Component {
 		return <div className="solver">
 			<div className="control">
 				{this.props.header}
-				{this.runControls && <input type="button" value="Solve" onClick={this.run} />}
+				{this.runControls && <input type="button" value="Solve" onClick={e => this.run(true)} />}
 			</div>
 			<div className="result">{this.customRender ? this.customRender() : <this.solution />}</div>
 		</div>;

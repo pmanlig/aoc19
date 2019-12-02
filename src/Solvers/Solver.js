@@ -32,7 +32,8 @@ export default class Solver extends React.Component {
 	solution = p => {
 		if (this.customRender) return <this.customRender />;
 		if (!this.state.solution) return false;
-		return this.state.solution.toString().split("\n").map(t => <p>{t}</p>);
+		let i = 0;
+		return this.state.solution.toString().split("\n").map(t => <p key={i++}>{t}</p>);
 	}
 
 	render() {

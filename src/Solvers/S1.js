@@ -1,4 +1,3 @@
-import React from 'react';
 import Solver from './Solver';
 
 export class S1a extends Solver {

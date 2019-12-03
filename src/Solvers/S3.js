@@ -190,7 +190,8 @@ export class S3a extends Solver {
 			}
 		});
 
-		let scaling = 12000;
+		let bounds = wireA.bounds.union(wireB.bounds);
+		let scaling = 100 * (Math.floor(Math.max(bounds.u, -bounds.d, -bounds.l, bounds.r) / 100) + 1);
 
 		const ctx = this.refs.canvas.getContext('2d');
 		ctx.clearRect(0, 0, 500, 500);
@@ -200,7 +201,7 @@ export class S3a extends Solver {
 		this.drawCircle(ctx, delCoord, 5, scaling, "#FF0000", 3);
 		this.drawOrigin(ctx, 20, scaling, "#3F3F3F");
 
-		this.setState({ wireA: wireA, wireB: wireB, intersections: intersections, distance: distance, delay: delay });
+		this.setState({ wireA: wireA, wireB: wireB, intersections: intersections, distance: distance, delay: delay, scaling: scaling });
 	}
 
 	drawOrigin(ctx, size, scaling, style) {
@@ -240,6 +241,7 @@ export class S3a extends Solver {
 			<p>{this.state.intersections && this.state.intersections.length} intersections</p>
 			<p>Distance to closest intersection: {this.state.distance}</p>
 			<p>Delay to closest intersection: {this.state.delay}</p>
+			<p>Scaling: {this.state.scaling}</p>
 		</div>;
 	}
 }

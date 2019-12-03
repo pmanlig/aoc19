@@ -193,6 +193,7 @@ export class S3a extends Solver {
 		let scaling = 12000;
 
 		const ctx = this.refs.canvas.getContext('2d');
+		ctx.clearRect(0, 0, 500, 500);
 		wireA.draw(ctx, scaling, "#00FF00");
 		wireB.draw(ctx, scaling, "#0000FF");
 		this.drawCircle(ctx, distCoord, 5, scaling, "#FF0000", 3);

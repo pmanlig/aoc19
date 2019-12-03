@@ -2,13 +2,11 @@ import './Solver.css';
 import React from 'react';
 
 export default class Solver extends React.Component {
-	constructor(props) {
-		super(props);
-		this.state = {};
-		this.runControls = false;
-		this.running = false;
-	}
-
+	state = {};
+	show = true;
+	runcontrols = false;
+	running = false;
+	
 	async solve(input) {
 		// This space intentionally left blank
 	}

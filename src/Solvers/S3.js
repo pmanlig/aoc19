@@ -200,7 +200,6 @@ export class S3a extends Solver {
 		this.drawCircle(ctx, delCoord, 5, scaling, "#FF0000", 3);
 		this.drawOrigin(ctx, 20, scaling, "#3F3F3F");
 
-		// this.setState({ solution: `${wireA.toString()}\n${wireB.toString()}\nIntersections: ${intersections.length}\nDistance: ${distance}` });
 		this.setState({ wireA: wireA, wireB: wireB, intersections: intersections, distance: distance, delay: delay });
 	}
 

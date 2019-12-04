@@ -247,5 +247,5 @@ export class S3a extends Solver {
 }
 
 export class S3b extends Solver {
-	show = false;
+	static hide = true;
 }

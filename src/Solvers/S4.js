@@ -94,5 +94,5 @@ export class S4a extends Solver {
 }
 
 export class S4b extends Solver {
-	show = false;
+	static hide = true;
 }

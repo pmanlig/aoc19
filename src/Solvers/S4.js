@@ -11,18 +11,35 @@ class Password {
 		return true;
 	}
 
+	lesser(b) {
+		for (var i = 0; i < this.digits.length; i++) {
+			if (this.digits[i] < b.digits[i]) return true;
+			if (this.digits[i] > b.digits[i]) return false;
+		}
+		return false;
+	}
+
+	greater(b) {
+		for (var i = 0; i < this.digits.length; i++) {
+			if (this.digits[i] < b.digits[i]) return false;
+			if (this.digits[i] > b.digits[i]) return true;
+		}
+		return false;
+	}
+
 	inc() {
-		let i = this.digits.length - 1;
-		while (i >= 0) {
+		let i = this.digits.length;
+		while (i > 0) {
+			i--;
 			if (this.digits[i] < 9) {
 				this.digits[i]++;
-				while (i < this.digits.length - 1) {
+				i++;
+				while (i < this.digits.length) {
+					this.digits[i] = this.digits[i - 1];
 					i++;
-					this.digits[i] = 0;
 				}
 				return;
 			}
-			i--;
 		}
 	}
 
@@ -61,7 +78,8 @@ export class S4a extends Solver {
 		let to = new Password(range[1]);
 		let count = 0;
 		let count2 = 0;
-		while (!i.equal(to)) {
+
+		while (!i.greater(to)) {
 			if (i.good()) count++;
 			if (i.good2()) count2++;
 			i.inc();
@@ -70,7 +88,7 @@ export class S4a extends Solver {
 		console.log(new Password("112233").good2());
 		console.log(new Password("123444").good2());
 		console.log(new Password("111122").good2());
-		
+
 		this.setState({ solution: `From: ${from.toString()}\nTo: ${to.toString()}\n#passwords(1): ${count}\n#passwords(2): ${count2}` });
 	}
 }

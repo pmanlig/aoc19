@@ -72,6 +72,14 @@ class Password {
 
 export class S4a extends Solver {
 	async solve(input) {
+		// Bonus solution
+		let cnt = 0, tn = parseInt(input.split("-")[1]);
+		for (var p = parseInt(input.split("-")[0]); p <= tn; p++) {
+			let d = p.toString().split("").map(c => parseInt(c));
+			if (!(d[0] > d[1] || d[1] > d[2] || d[2] > d[3] || d[3] > d[4] || d[4] > d[5]) && (d[0] == d[1] || d[1] == d[2] || d[2] == d[3] || d[3] == d[4] || d[4] == d[5])) cnt++;
+		}
+		console.log(`#passwords: ${cnt}`);
+
 		let range = input.split("-");
 		let from = new Password(range[0]);
 		let i = new Password(range[0]);

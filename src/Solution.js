@@ -56,7 +56,7 @@ export class Solution extends React.Component {
 			<div className="solution">
 				<div className="data">
 					<Input value={input || ""} onChange={e => this.setState({ input: e.target.value })} />
-					{s ? <s.a header="Part 1:" input={input} /> : <div className="part1">part1</div>}
+					{s ? <s.a header={s.b.show ? "Part 1:" : "Solution:"} input={input} /> : <div className="part1">part1</div>}
 					{s ? s.b.show && <s.b header="Part 2:" input={input} /> : <div className="part2">part1</div>}
 				</div>
 			</div>

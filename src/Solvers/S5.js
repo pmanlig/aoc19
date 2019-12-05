@@ -2,6 +2,8 @@ import React from 'react';
 import Solver from './Solver';
 
 function fill(num, positions) {
+	if (num === undefined) return "";
+	if (num < 0) return "-" + fill(-num, positions - 1);
 	let res = num.toString();
 	while (res.length < positions) res = "0" + res;
 	return res;
@@ -45,27 +47,6 @@ function calc(mem, stdin) {
 	return { mem: mem, stdout: stdout, disassembly: disass };
 }
 
-function format(mem) {
-	let cnt = 0;
-	let res = `\n${fill(cnt, 3)}: `;
-	while (mem.length > 10) {
-		cnt += 10;
-		let sub = [];
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		sub.push(mem.shift());
-		res += `${sub.join()}\n${cnt}: `;
-	}
-	return res + mem.join();
-}
-
 export class S5a extends Solver {
 	runControls = true;
 	state = { input: 1, disassembly: [], memory: [] }
@@ -86,28 +67,51 @@ export class S5a extends Solver {
 	memrow = p => {
 		return null;
 	}
-	
-	memrows = p => {
-		let i=0;
-		let rows = [];
 
+	memrows = p => {
+		let i = 0;
+		let rows = [];
+		while (i < p.value.length) {
+			rows.push(<tr key={i}>
+				<td>{fill(i, 3)}:</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+				<td>{fill(p.value[i++], 5)}</td>
+			</tr>);
+		}
 		return rows;
+	}
+
+	memoryTable = p => {
+		if (!p.value) return null;
+		return <div>
+			<p>Memory: {p.value.length} positions</p>
+			<table>
+				<tbody>
+					<this.memrows value={p.value} />
+				</tbody>
+			</table></div>;
 	}
 
 	customRender = p => {
 		return <div>
 			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: parseInt(e.target.value) || 0 })} /></div>
 			<div>{this.state.output && "Output: " + this.state.output.join(", ")}</div>
-			<div>Execution log:<br />{this.state.disassembly && this.state.disassembly.map(d => <span>{d}<br /></span>)}</div>
-			<table>
-				<tbody>
-					<this.memrows value={this.state.memory} />
-				</tbody>
-			</table>
+			{/*
+			<div>Debug:<br />{this.state.disassembly && this.state.disassembly.map(d => <span>{d}<br /></span>)}</div>
+			*/}
+			<this.memoryTable value={this.state.memory} />
 		</div>;
 	}
 }
 
 export class S5b extends S5a {
-	state = { input: 5 }
+	state = { input: 5, disassembly: [], memory: [] }
 }

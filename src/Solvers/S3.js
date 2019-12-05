@@ -201,7 +201,7 @@ export class S3a extends Solver {
 		this.drawCircle(ctx, delCoord, 5, scaling, "#FF0000", 3);
 		this.drawOrigin(ctx, 20, scaling, "#3F3F3F");
 
-		this.setState({ wireA: wireA, wireB: wireB, intersections: intersections, distance: distance, delay: delay, scaling: scaling });
+		this.setState({ wireA: wireA, wireB: wireB, intersections: intersections, distance: distance, distCoord: distCoord, delay: delay, delCoord: delCoord, scaling: scaling });
 	}
 
 	drawOrigin(ctx, size, scaling, style) {
@@ -239,8 +239,8 @@ export class S3a extends Solver {
 			<p>Wire B: {this.state.wireA && this.state.wireA.coordinates.length} coordinates</p>
 			<p>Bounds: [ Up: {bounds.u}, Down: {bounds.d}, Left: {bounds.l}, Right: {bounds.r}]</p>
 			<p>{this.state.intersections && this.state.intersections.length} intersections</p>
-			<p>Distance to closest intersection: {this.state.distance}</p>
-			<p>Delay to closest intersection: {this.state.delay}</p>
+			<p>Distance to closest intersection: {this.state.distance} {this.state.distCoord && `(${this.state.distCoord.x},${this.state.distCoord.y})`}</p>
+			<p>Delay to closest intersection: {this.state.delay} {this.state.distCoord && `(${this.state.delCoord.x},${this.state.delCoord.y})`}</p>
 			<p>Scaling: {this.state.scaling}</p>
 		</div>;
 	}

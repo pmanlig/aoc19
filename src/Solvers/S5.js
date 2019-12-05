@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import Solver from './Solver';
 
 function fill(num, positions) {
@@ -74,8 +74,20 @@ export class S5a extends Solver {
 			let mem = input.split(",").map(s => parseInt(s));
 			let stdin = [this.state.input];
 			let res = calc(mem, stdin);
-			this.setState({ solution: `Input: ${this.state.input}\nMemory Size: ${mem.length}\nOutput: [${res.stdout.join()}]\nLog:\n${res.disassembly.join("\n")}\nMemory: [${format(res.mem)}]` });
+			this.setState({
+				memory: res.mem,
+				output: res.stdout,
+				disassembly: res.disassembly
+			});
 		}
+	}
+
+	customRender() {
+		return <div>
+			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: e.target.value })} /></div>
+			<div>{this.state.output && "Output: " + this.state.output.join(", ")}</div>
+			<div></div>
+		</div>;
 	}
 }
 

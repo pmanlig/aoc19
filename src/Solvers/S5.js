@@ -67,7 +67,8 @@ function format(mem) {
 }
 
 export class S5a extends Solver {
-	state = { input: 1 }
+	runControls = true;
+	state = { input: 1, disassembly: [], memory: [] }
 
 	async solve(input) {
 		if (input) {
@@ -82,24 +83,31 @@ export class S5a extends Solver {
 		}
 	}
 
-	customRender() {
+	memrow = p => {
+		return null;
+	}
+	
+	memrows = p => {
+		let i=0;
+		let rows = [];
+
+		return rows;
+	}
+
+	customRender = p => {
 		return <div>
-			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: e.target.value })} /></div>
+			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: parseInt(e.target.value) || 0 })} /></div>
 			<div>{this.state.output && "Output: " + this.state.output.join(", ")}</div>
-			<div></div>
+			<div>Execution log:<br />{this.state.disassembly && this.state.disassembly.map(d => <span>{d}<br /></span>)}</div>
+			<table>
+				<tbody>
+					<this.memrows value={this.state.memory} />
+				</tbody>
+			</table>
 		</div>;
 	}
 }
 
-export class S5b extends Solver {
+export class S5b extends S5a {
 	state = { input: 5 }
-
-	async solve(input) {
-		if (input) {
-			let mem = input.split(",").map(s => parseInt(s));
-			let stdin = [this.state.input];
-			let res = calc(mem, stdin);
-			this.setState({ solution: `Input: ${this.state.input}\nMemory Size: ${mem.length}\nOutput: [${res.stdout.join()}]\nLog:\n${res.disassembly.join("\n")}\nMemory: [${format(res.mem)}]` });
-		}
-	}
 }

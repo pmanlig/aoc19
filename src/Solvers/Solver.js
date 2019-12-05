@@ -6,7 +6,7 @@ export default class Solver extends React.Component {
 	show = true;
 	runcontrols = false;
 	running = false;
-	
+
 	async solve(input) {
 		// This space intentionally left blank
 	}
@@ -48,7 +48,7 @@ export default class Solver extends React.Component {
 				{this.props.header}
 				{this.runControls && <input type="button" value="Solve" onClick={e => this.run(true)} />}
 			</div>
-			<div className="result">{this.customRender ? this.customRender() : <this.solution />}</div>
+			<div className="result"><this.solution /></div>
 		</div>;
 	}
 }

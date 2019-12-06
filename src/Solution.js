@@ -16,7 +16,7 @@ export class Solution extends React.Component {
 				if (res.ok) {
 					let txt = await res.text();
 					if (!txt.startsWith("<!DOCTYPE html>")) {
-						this.setState({ input: txt, day: this.props.match.params.day });
+						this.setState({ input: txt.replace(/\r/gm, ''), day: this.props.match.params.day });
 					}
 				}
 			} catch {

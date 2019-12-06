@@ -10,7 +10,7 @@ class Orbit {
 
 export class S6a extends Solver {
 	async solve(input) {
-		let orbits = input.split("\r\n").map(o => o.split(")")).map(o => new Orbit(o[1], o[0]));
+		let orbits = input.split("\n").map(o => o.split(")")).map(o => new Orbit(o[1], o[0]));
 		orbits.push(new Orbit("COM", null));
 		let dict = {};
 		orbits.forEach(o => { dict[o.id] = o; });

@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import Solver from './Solver';
 
 class Orbit {
@@ -36,19 +36,24 @@ export class S6a extends Solver {
 		sPath.reverse();
 		yPath.push(lcd);
 		let path = yPath.concat(sPath);
-		console.log(yPath);
-		console.log(sPath);
-		console.log(path);
+		this.setState({
+			orbits: orbits,
+			count: count,
+			path: path,
+			solution: `Orbits: ${orbits.length}\nCount: ${count}\nHops from you to santa: ${path.length - 1}\n${path.join("\n")}`
+		});
+	}
 
-		this.setState({ solution: `Orbits: ${orbits.length}\nCount: ${count}` });
+	customRender = p => {
+		return <div>
+			<p>Orbits: {this.state.orbits && this.state.orbits.length}</p>
+			<p>Count: {this.state.count}</p>
+			<p>Hops from you to santa: {this.state.path && this.state.path.length - 1}</p>
+			<p>{this.state.path && this.state.path.map(s => <span key={s}>{s}<br /></span>)}</p>
+		</div>;
 	}
 }
 
 export class S6b extends Solver {
-	runControls = true;
-
-	async solve(input) {
-		if (this.running)
-			this.setState({ solution: input });
-	}
+	static hide = true;
 }

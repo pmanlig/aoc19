@@ -36,7 +36,6 @@ export default class Solver extends React.Component {
 	}
 
 	solution = p => {
-		if (this.customRender) return <this.customRender />;
 		if (!this.state.solution) return false;
 		let i = 0;
 		return this.state.solution.toString().split("\n").map(t => <p key={i++}>{t}</p>);
@@ -48,7 +47,7 @@ export default class Solver extends React.Component {
 				{this.props.header}
 				{this.runControls && <input type="button" value="Solve" onClick={e => this.run(true)} />}
 			</div>
-			<div className="result"><this.solution /></div>
+			<div className="result">{this.customRender ? this.customRender() : <this.solution />}</div>
 		</div>;
 	}
 }

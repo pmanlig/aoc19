@@ -33,7 +33,7 @@ export class S6a extends Solver {
 			lcd = yPath.shift();
 			sPath.shift();
 		}
-		sPath.reverse();
+		yPath.reverse();
 		yPath.push(lcd);
 		let path = yPath.concat(sPath);
 		this.setState({

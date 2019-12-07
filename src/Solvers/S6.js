@@ -49,6 +49,7 @@ export class S6a extends Solver {
 			<p>Orbits: {this.state.orbits && this.state.orbits.length}</p>
 			<p>Count: {this.state.count}</p>
 			<p>Hops from you to santa: {this.state.path && this.state.path.length - 1}</p>
+			<canvas id="solution" ref="canvas" width="600" height="600" />
 			<p>{this.state.path && this.state.path.map(s => <span key={s}>{s}<br /></span>)}</p>
 		</div>;
 	}

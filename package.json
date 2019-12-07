@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://pmanlig.github.io/aoc19",
   "dependencies": {
+    "npm": "^6.13.2",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-router": "^5.1.2",

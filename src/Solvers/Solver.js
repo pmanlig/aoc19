@@ -7,8 +7,12 @@ export default class Solver extends React.Component {
 	runcontrols = false;
 	running = false;
 
-	async solve(input) {
-		// This space intentionally left blank
+	async asyncSolve(input) {
+		try {
+			this.solve(input);
+		} catch (e) {
+			this.setState({ error: e });
+		}
 	}
 
 	componentDidMount() {
@@ -24,15 +28,20 @@ export default class Solver extends React.Component {
 	}
 
 	run(auto) {
-		if (this.runControls) {
-			this.running = auto;
-			if (!this.running)
+		try {
+			if (this.runControls) {
+				this.running = auto;
+				if (!this.running)
+					return;
+			}
+			if (this.props.input === null)
 				return;
-		}
-		if (this.props.input === null)
-			return;
 
-		this.solve(this.props.input);
+			this.setState({ error: null });
+			this.asyncSolve(this.props.input);
+		} catch (e) {
+			this.setState({ error: e });
+		}
 	}
 
 	solution = p => {
@@ -42,12 +51,20 @@ export default class Solver extends React.Component {
 	}
 
 	render() {
-		return <div className="solver">
-			<div className="control">
-				{this.props.header}
-				{this.runControls && <input type="button" value="Solve" onClick={e => this.run(true)} />}
-			</div>
-			<div className="result">{this.customRender ? this.customRender() : <this.solution />}</div>
-		</div>;
+		try {
+			return <div className="solver">
+				<div className="control">
+					{this.props.header}
+					{this.runControls && <input type="button" value="Solve" onClick={e => this.run(true)} />}
+				</div>
+				<div className="result">
+					{this.customRender ? this.customRender() :
+						(this.state.error ? <div>Error: {this.state.error.toString()}</div> :
+							<this.solution />)}
+				</div>
+			</div>;
+		} catch (e) {
+			return <div>Error: {e.toString()}</div>;
+		}
 	}
 }

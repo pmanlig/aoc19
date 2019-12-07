@@ -72,7 +72,7 @@ class Password {
 
 export class S4a extends Solver {
 	// Bonus solution
-	async solve2(input) {
+	solve2(input) {
 		let cnt = 0, to = parseInt(input.split("-")[1]);
 		for (var p = parseInt(input.split("-")[0]); p <= to; p++) {
 			let d = p.toString().split("").map(c => parseInt(c));
@@ -83,7 +83,7 @@ export class S4a extends Solver {
 		console.log(`#passwords: ${cnt}`);
 	}
 
-	async solve(input) {
+	solve(input) {
 		// this.solve2(input);
 		let range = input.split("-");
 		let from = new Password(range[0]);

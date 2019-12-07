@@ -110,7 +110,7 @@ export class S5a extends Solver {
 	runControls = true;
 	state = { input: 1, disassembly: [], memory: [] }
 
-	async solve(input) {
+	solve(input) {
 		if (input) {
 			let mem = input.split(",").map(s => parseInt(s));
 			let stdin = [this.state.input];
@@ -159,15 +159,19 @@ export class S5a extends Solver {
 			</table></div>;
 	}
 
-	customRender = p => {
+	result() {
 		let i = 1;
 		return <div>
-			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: parseInt(e.target.value) || 0 })} /></div>
 			<div>{this.state.output && "Output: " + this.state.output.join(", ")}</div>
-			{
-				<div>Debug:<br />{this.state.disassembly && this.state.disassembly.map(d => <span key={i++}>{d}<br /></span>)}</div>
-			}
+			<div>Debug:<br />{this.state.disassembly && this.state.disassembly.map(d => <span key={i++}>{d}<br /></span>)}</div>
 			<this.memoryTable value={this.state.memory} />
+		</div>;
+	}
+
+	customRender() {
+		return <div>
+			<div>Input: <input value={this.state.input} onChange={e => this.setState({ input: parseInt(e.target.value) || 0 })} /></div>
+			{this.state.error ? <div>Error: {this.state.error.toString()}</div> : this.result()}
 		</div>;
 	}
 }

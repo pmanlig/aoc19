@@ -167,7 +167,7 @@ class Wire {
 export class S3a extends Solver {
 	state = {}
 
-	async solve(input) {
+	solve(input) {
 		let grid = new Grid();
 		let wires = input.split("\n");
 		let wireA = new Wire(wires[0], grid);

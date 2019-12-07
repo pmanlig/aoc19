@@ -2,7 +2,7 @@
 import Solver from './Solver';
 
 export class S24a extends Solver {
-	async solve(input) {
+	solve(input) {
 		this.setState({ solution: input });
 	}
 }
@@ -10,7 +10,7 @@ export class S24a extends Solver {
 export class S24b extends Solver {
 	runControls = true;
 
-	async solve(input) {
+	solve(input) {
 		if (this.running)
 			this.setState({ solution: input });
 	}

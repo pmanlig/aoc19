@@ -26,14 +26,14 @@ function calc(input, noun, verb) {
 }
 
 export class S2a extends Solver {
-	async solve(input) {
+	solve(input) {
 		let res = calc(input, 12, 2);
 		this.setState({ solution: res && res.reduce((t, n) => t + ",\n" + n) });
 	}
 }
 
 export class S2b extends Solver {
-	async solve(input) {
+	solve(input) {
 		let answer = 0;
 		for (var noun = 0; noun < 100; noun++) {
 			for (var verb = 0; verb < 100; verb++) {

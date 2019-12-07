@@ -1,7 +1,7 @@
 import Solver from './Solver';
 
 export class S1a extends Solver {
-	async solve(input) {
+	solve(input) {
 		let r = input && input.split("\n").filter(s => s !== "").map(s => Math.floor(parseInt(s) / 3) - 2).reduce((t, n) => t + n);
 		this.setState({ solution: r });
 	}
@@ -18,7 +18,7 @@ export class S1b extends Solver {
 		return x;
 	}
 
-	async solve(input) {
+	solve(input) {
 		let r = input && input.split("\n").filter(s => s !== "").map(s => this.fuel(parseInt(s))).reduce((t, n) => t + n);
 		this.setState({ solution: r });
 	}

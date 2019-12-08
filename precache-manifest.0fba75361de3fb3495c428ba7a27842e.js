@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "8289942e2719389bb293400d0dbe8d06",
+    "revision": "c76d2df0c8969e5ade36f72d72a030cc",
     "url": "/aoc19/index.html"
   },
   {
-    "revision": "45a5cb116de34124b632",
+    "revision": "1e84ed4af59091f5c74e",
     "url": "/aoc19/static/css/main.4be7ce34.chunk.css"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/aoc19/static/js/2.8606f487.chunk.js"
   },
   {
-    "revision": "45a5cb116de34124b632",
-    "url": "/aoc19/static/js/main.e8df4344.chunk.js"
+    "revision": "1e84ed4af59091f5c74e",
+    "url": "/aoc19/static/js/main.8eb0f82c.chunk.js"
   },
   {
     "revision": "69dc9c949f9440d7d576",

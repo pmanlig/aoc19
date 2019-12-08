@@ -13,6 +13,20 @@ class Orbit {
 		this.sat.forEach(s => s.setDistance(d + 1));
 	}
 
+	setWidth() {
+		this.sat.forEach(s => s.setWidth());
+		if (this.sat.length === 0) this.width = 1;
+		else this.width = this.sat.map(s => s.width).reduce((t, n) => t + n);
+	}
+
+	setY(start) {
+		this.y = start + Math.floor(this.width / 2);
+		this.sat.forEach(s => {
+			s.setY(start);
+			start += s.width;
+		});
+	}
+
 	maxDistance() {
 		var d = this.dist;
 		this.sat.forEach(s => {
@@ -27,6 +41,22 @@ class Orbit {
 		if (this.sat.length === 0) return 0;
 		return this.sat.map(s => s.numberAt(distance)).reduce((t, n) => t + n);
 	}
+
+	draw(ctx, offsetX, offsetY, scaling, style) {
+		ctx.strokeStyle = style;
+		ctx.lineWidth = 1;
+		if (this.up) {
+			ctx.beginPath();
+			ctx.moveTo((this.up.dist + offsetX) * scaling, (this.up.y + offsetY) * scaling);
+			ctx.lineTo((this.dist + offsetX) * scaling, (this.y + offsetY) * scaling);
+			ctx.stroke();
+		}
+	}
+
+	drawTree(ctx, offsetX, offsetY, scaling, style) {
+		this.draw(ctx, offsetX, offsetY, scaling, style);
+		this.sat.forEach(s => s.drawTree(ctx, offsetX, offsetY, scaling, style));
+	}
 }
 
 export class S6a extends Solver {
@@ -38,7 +68,10 @@ export class S6a extends Solver {
 		let count = 0;
 		for (var k in dict) {
 			let o = dict[k];
-			if (o.orbit) { dict[o.orbit].sat.push(o); }
+			if (o.orbit) {
+				o.up = dict[o.orbit];
+				o.up.sat.push(o);
+			}
 			while (o && o.orbit !== null) {
 				o = dict[o.orbit];
 				count++;
@@ -46,34 +79,41 @@ export class S6a extends Solver {
 		}
 		let root = dict["COM"];
 		root.setDistance(0);
-		console.log(root);
 		let maxDist = root.maxDistance();
-		console.log(maxDist);
 		let density = [];
 		for (let i = 0; i <= maxDist; i++) {
 			density.push(root.numberAt(i));
 		}
-		console.log(density);
+		root.setWidth();
+		root.setY(0);
+
+		let scaling = 560 / maxDist;
+		const ctx = this.refs.canvas.getContext('2d');
+		ctx.clearRect(0, 0, 600, 600);
+		root.drawTree(ctx, 20, 50, scaling, "#00FF00");
 
 		let you = dict["YOU"];
 		let san = dict["SAN"];
+		you.draw(ctx, 20, 50, scaling, "#FF0000");
+		san.draw(ctx, 20, 50, scaling, "#FF0000");
 		let yPath = [];
 		let sPath = [];
-		while (you.orbit !== null) { yPath.unshift(you.orbit); you = dict[you.orbit]; }
-		while (san.orbit !== null) { sPath.unshift(san.orbit); san = dict[san.orbit]; }
-		let lcd = "COM";
-		while (yPath[0] === sPath[0]) {
+		while (you.orbit !== null) { yPath.unshift(you.up); you = you.up; }
+		while (san.orbit !== null) { sPath.unshift(san.up); san = san.up; }
+		let lcd = null;
+		while (yPath[0].id === sPath[0].id) {
 			lcd = yPath.shift();
 			sPath.shift();
 		}
+		yPath.forEach(p => { p.draw(ctx, 20, 50, scaling, "#FF0000"); });
+		sPath.forEach(p => { p.draw(ctx, 20, 50, scaling, "#FF0000"); });
 		yPath.reverse();
 		yPath.push(lcd);
 		let path = yPath.concat(sPath);
 		this.setState({
 			orbits: orbits,
 			count: count,
-			path: path,
-			solution: `Orbits: ${orbits.length}\nCount: ${count}\nHops from you to santa: ${path.length - 1}\n${path.join("\n")}`
+			path: path
 		});
 	}
 
@@ -83,7 +123,7 @@ export class S6a extends Solver {
 			<p>Count: {this.state.count}</p>
 			<p>Hops from you to santa: {this.state.path && this.state.path.length - 1}</p>
 			<canvas id="solution" ref="canvas" width="600" height="600" />
-			<p>{this.state.path && this.state.path.map(s => <span key={s}>{s}<br /></span>)}</p>
+			{false && this.state.path && <p>{this.state.path.map(s => <span key={s}>{s}<br /></span>)}</p>}
 		</div>;
 	}
 }

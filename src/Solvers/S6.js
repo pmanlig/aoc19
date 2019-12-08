@@ -5,6 +5,27 @@ class Orbit {
 	constructor(id, orbit) {
 		this.id = id;
 		this.orbit = orbit;
+		this.sat = [];
+	}
+
+	setDistance(d) {
+		this.dist = d;
+		this.sat.forEach(s => s.setDistance(d + 1));
+	}
+
+	maxDistance() {
+		var d = this.dist;
+		this.sat.forEach(s => {
+			let sd = s.maxDistance();
+			if (sd > d) d = sd;
+		});
+		return d;
+	}
+
+	numberAt(distance) {
+		if (distance === this.dist) return 1;
+		if (this.sat.length === 0) return 0;
+		return this.sat.map(s => s.numberAt(distance)).reduce((t, n) => t + n);
 	}
 }
 
@@ -17,11 +38,23 @@ export class S6a extends Solver {
 		let count = 0;
 		for (var k in dict) {
 			let o = dict[k];
+			if (o.orbit) { dict[o.orbit].sat.push(o); }
 			while (o && o.orbit !== null) {
 				o = dict[o.orbit];
 				count++;
 			}
 		}
+		let root = dict["COM"];
+		root.setDistance(0);
+		console.log(root);
+		let maxDist = root.maxDistance();
+		console.log(maxDist);
+		let density = [];
+		for (let i = 0; i <= maxDist; i++) {
+			density.push(root.numberAt(i));
+		}
+		console.log(density);
+
 		let you = dict["YOU"];
 		let san = dict["SAN"];
 		let yPath = [];

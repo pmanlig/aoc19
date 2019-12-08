@@ -42,20 +42,20 @@ class Orbit {
 		return this.sat.map(s => s.numberAt(distance)).reduce((t, n) => t + n);
 	}
 
-	draw(ctx, offsetX, offsetY, scaling, style) {
+	draw(ctx, offsetX, offsetY, scaleX, scaleY, style) {
 		ctx.strokeStyle = style;
 		ctx.lineWidth = 1;
 		if (this.up) {
 			ctx.beginPath();
-			ctx.moveTo((this.up.dist + offsetX) * scaling, (this.up.y + offsetY) * scaling);
-			ctx.lineTo((this.dist + offsetX) * scaling, (this.y + offsetY) * scaling);
+			ctx.moveTo(this.up.dist * scaleX + offsetX, this.up.y * scaleY + offsetY);
+			ctx.lineTo(this.dist * scaleX + offsetX, this.y * scaleY + offsetY);
 			ctx.stroke();
 		}
 	}
 
-	drawTree(ctx, offsetX, offsetY, scaling, style) {
-		this.draw(ctx, offsetX, offsetY, scaling, style);
-		this.sat.forEach(s => s.drawTree(ctx, offsetX, offsetY, scaling, style));
+	drawTree(ctx, offsetX, offsetY, scaleX, scaleY, style) {
+		this.draw(ctx, offsetX, offsetY, scaleX, scaleY, style);
+		this.sat.forEach(s => s.drawTree(ctx, offsetX, offsetY, scaleX, scaleY, style));
 	}
 }
 
@@ -86,16 +86,18 @@ export class S6a extends Solver {
 		}
 		root.setWidth();
 		root.setY(0);
+		console.log(root);
 
-		let scaling = 560 / maxDist;
+		let scaleY = 560 / maxDist;
+		let scaleX = 500 / root.width;
 		const ctx = this.refs.canvas.getContext('2d');
 		ctx.clearRect(0, 0, 600, 600);
-		root.drawTree(ctx, 20, 50, scaling, "#00FF00");
+		root.drawTree(ctx, 20, 50, scaleX, scaleY, "#00FF00");
 
 		let you = dict["YOU"];
 		let san = dict["SAN"];
-		you.draw(ctx, 20, 50, scaling, "#FF0000");
-		san.draw(ctx, 20, 50, scaling, "#FF0000");
+		you.draw(ctx, 20, 50, scaleX, scaleY, "#FF0000");
+		san.draw(ctx, 20, 50, scaleX, scaleY, "#FF0000");
 		let yPath = [];
 		let sPath = [];
 		while (you.orbit !== null) { yPath.unshift(you.up); you = you.up; }
@@ -105,8 +107,8 @@ export class S6a extends Solver {
 			lcd = yPath.shift();
 			sPath.shift();
 		}
-		yPath.forEach(p => { p.draw(ctx, 20, 50, scaling, "#FF0000"); });
-		sPath.forEach(p => { p.draw(ctx, 20, 50, scaling, "#FF0000"); });
+		yPath.forEach(p => { p.draw(ctx, 20, 50, scaleX, scaleY, "#FF0000"); });
+		sPath.forEach(p => { p.draw(ctx, 20, 50, scaleX, scaleY, "#FF0000"); });
 		yPath.reverse();
 		yPath.push(lcd);
 		let path = yPath.concat(sPath);

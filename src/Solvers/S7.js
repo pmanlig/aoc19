@@ -139,9 +139,7 @@ export class S7a extends Solver {
 		let res = 0;
 		let phase = [0, 1, 2, 3, 4];
 		combine(phase, x => {
-			// console.log("Input: [" + x.join() + "]");
 			let p = this.calc(input, x);
-			// console.log("Result: " + p);
 			if (p > res) res = p;
 		});
 
@@ -167,23 +165,12 @@ export class S7b extends Solver {
 			let amp = amps.shift();
 			if (amp.run() === 1) amps.push(amp);
 		}
-		/*
-		console.log(`P1: [${p1.join()}]`);
-		console.log(`P2: [${p2.join()}]`);
-		console.log(`P3: [${p3.join()}]`);
-		console.log(`P4: [${p4.join()}]`);
-		console.log(`P5: [${p5.join()}]`);
-		*/
 		return p1[0];
 	}
 
 	solve(input) {
 		let res = 0;
 		let phase = [5, 6, 7, 8, 9];
-		// phase = [9, 8, 7, 6, 5];
-		// res = this.calc(input, phase);
-		// this.setState({ solution: res });
-		// return;
 		combine(phase, x => {
 			let p = this.calc(input, x);
 			console.log(`[${x.join()}] => ${p}`);

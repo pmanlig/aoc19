@@ -151,7 +151,11 @@ export class S7a extends Solver {
 
 export class S7b extends Solver {
 	calc(program, phase) {
-		let p1 = [phase[0], 0], p2 = [phase[1]], p3 = [phase[2]], p4 = [phase[3]], p5 = [phase[4]];
+		let p1 = [phase[0], 0],
+			p2 = [phase[1]],
+			p3 = [phase[2]],
+			p4 = [phase[3]],
+			p5 = [phase[4]];
 		let amps = [
 			new Computer(program, p1, p2),
 			new Computer(program, p2, p3),

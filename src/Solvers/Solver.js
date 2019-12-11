@@ -11,6 +11,7 @@ export default class Solver extends React.Component {
 		try {
 			this.solve(input);
 		} catch (e) {
+			console.log(e);
 			this.setState({ error: e });
 		}
 	}
@@ -40,6 +41,7 @@ export default class Solver extends React.Component {
 			this.setState({ error: null });
 			this.asyncSolve(this.props.input);
 		} catch (e) {
+			console.log(e);
 			this.setState({ error: e });
 		}
 	}

@@ -74,7 +74,7 @@ export class S10a extends Solver {
 		return b;
 	}
 
-	calcOrder(map, x, y) {
+	calcOrder(map, x, y, previous) {
 		let result = [];
 		for (let y2 = 0; y2 < map.length; y2++) {
 			for (let x2 = 0; x2 < map[y].length; x2++) {
@@ -83,6 +83,9 @@ export class S10a extends Solver {
 				}
 			}
 		}
+		result = result.sort((a, b) => a.bearing - b.bearing);
+		result.forEach(d => map[d.y][d.x] = 0);
+		if (previous) return previous.concat(result);
 		return result;
 	}
 
@@ -91,15 +94,9 @@ export class S10a extends Solver {
 	}
 
 	drawAsteroids(ctx) {
-		let map = this.state.map;
-		if (!map) return;
-		for (let y = 0; y < map.length; y++) {
-			for (let x = 0; x < map[y].length; x++) {
-				if (map[y][x]) {
-					drawCircle(ctx, this.convert(x), this.convert(y), 3, "#000000");
-				}
-			}
-		}
+		let { result } = this.state;
+		drawCircle(ctx, this.convert(result.x), this.convert(result.y), 3, "#000000");
+		this.state.result.destroyOrder.forEach(d => drawCircle(ctx, this.convert(d.x), this.convert(d.y), 3, "#000000"));
 	}
 
 	drawBase(ctx) {
@@ -112,15 +109,15 @@ export class S10a extends Solver {
 		let { result } = this.state;
 		let { destroyOrder } = result;
 		let to = destroyOrder[0];
-		console.log(result);
-		console.log(to);
 		drawLine(ctx, this.convert(result.x), this.convert(result.y), this.convert(to.x), this.convert(to.y), "#FF0000", 1);
 	}
 
 	solve(input) {
 		let map = input.split("\n").map(l => l.split("").map(c => c === "#" ? 1 : 0));
 		let result = this.calcAllVisible(map);
-		result.destroyOrder = this.calcOrder(map, result.x, result.y).sort((a, b) => a.bearing - b.bearing);
+		let destroy = []
+		while (destroy.length < result.count - 1) { destroy = this.calcOrder(map, result.x, result.y, destroy); }
+		result.destroyOrder = destroy;
 		result.target = result.destroyOrder[199];
 		setTimeout(() => this.updatePhase(), 3000);
 		this.setState({
@@ -154,11 +151,11 @@ export class S10a extends Solver {
 				let tgt = result.destroyOrder.shift();
 				map[tgt.y][tgt.x] = 0;
 				destroyed.push(tgt);
-				this.setState({ phase: destroyed.length < 200 ? 2 : 3, count: count - 1, text: "Firing!!!", blink: true, firing: true, destroyed: destroyed });
+				this.setState({ phase: result.destroyOrder.length > 0 ? 2 : 3, count: count - 1, text: "Firing!!!", blink: true, firing: true, destroyed: destroyed });
 				setTimeout(() => this.updatePhase(), 20);
 				break;
 			case 3:
-				this.setState({ phase: 3, text: "200 targets neutralized, sir!", blink: false, firing: false, destroyed: destroyed });
+				this.setState({ phase: 3, text: "All targets neutralized, sir!", blink: false, firing: false, destroyed: destroyed });
 				break;
 			default:
 				break;

@@ -1,10 +1,10 @@
-.grid {
+.App-grid {
 	display: grid;
 	grid-template-columns: repeat(5, auto);
 	grid-template-rows: repeat(5, calc(94vh/5 - 7px));
 }
 
-.grid div {
+.App-grid div {
 	border: 1px solid green;
 	background-color: darkred;
 	color: white;
@@ -16,6 +16,6 @@
 	justify-content: center;
 }
 
-.grid div:hover {
+.App-grid div:hover {
 	background-color: darkgreen;
 }

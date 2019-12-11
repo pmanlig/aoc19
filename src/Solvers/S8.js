@@ -1,5 +1,6 @@
 import React from 'react';
 import Solver from './Solver';
+import { CssImage } from '../util';
 
 export class S8a extends Solver {
 	solve(input) {
@@ -21,28 +22,29 @@ export class S8a extends Solver {
 		let checksum = minzerolayer.filter(x => x === 1).length * minzerolayer.filter(y => y === 2).length;
 
 		let img = [];
-		img[149] = 4;
-		img.fill(4, 0, 150);
-		// let txt = "";
-
 		for (let i = 0; i < 150; i++) {
+			let r = Math.floor(i / 25);
+			let c = i % 25;
+			if (c === 0) {
+				img[r] = [];
+				img[r][24] = 4;
+				img[r].fill(4, 0, 25);
+			}
 			for (let z = 0; z < layers.length; z++) {
-				if (img[i] === 4 && layers[z][i] !== 2) {
-					img[i] = layers[z][i];
-					// txt += img[i] === 1 ? "X" : " ";
+				if (img[r][c] === 4 && layers[z][i] !== 2) {
+					img[r][c] = layers[z][i];
 				}
 			}
-			// if (i % 25 === 24) txt += "\n";
 		}
 
-		this.drawImage(img);
+		// this.drawImage(img);
 		this.setState({ checksum: checksum, image: img });
 	}
 
 	customRender() {
 		let i = 0;
 		return <div>
-			<canvas id="solution" ref="canvas" width="100" height="24" />
+			<CssImage value={this.state.image} colors={["black", "white"]} />
 			<p>Checksum: {this.state.checksum}</p>
 			{this.state.text && <p>Text:<br />
 				{this.state.text.split("\n").map(t => <span key={i++} style={{ fontFamily: 'Courier, monospace', whiteSpace: 'pre' }}>{t}<br /></span>)}

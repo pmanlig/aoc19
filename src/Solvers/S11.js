@@ -1,6 +1,6 @@
-import './S11.css';
 import React from 'react';
 import Solver from './Solver';
+import { CssImage } from '../util';
 
 class Computer {
 	fill(num, positions) {
@@ -227,8 +227,8 @@ export class S11b extends Solver {
 
 	customRender() {
 		return <div>
+			{this.state.hull && <CssImage value={this.state.hull.surface} colors={["black", "white"]} />}
 			{this.state.hull && <p>Panel count: {this.state.hull.surface.reduce((t, n) => t.concat(n)).filter(e => e !== undefined).length}</p>}
-			{this.state.hull && this.state.hull.display(0)}
 			{this.state.error && <p>Error: {this.state.error.message}</p>}
 		</div>;
 	}

@@ -1,7 +1,7 @@
 import './App.css';
 import React from 'react';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom'
-import { Grid } from './Grid';
+import { AppGrid } from './AppGrid';
 import { Solution } from './Solution';
 import {
 	S1a, S1b, S2a, S2b, S3a, S3b, S4a, S4b, S5a, S5b, S6a, S6b, S7a, S7b, S8a, S8b, S9a, S9b,
@@ -42,7 +42,7 @@ export default function App() {
 		<Router basename={`${process.env.PUBLIC_URL}`}>
 			<Switch>
 				<Route exact path="/:day" render={p => <Solution solvers={solvers} {...p} />} />
-				<Route exact path="/" component={Grid} />
+				<Route exact path="/" component={AppGrid} />
 				<Route path="/" render={p => <h2>404 - this puzzle does not exist!</h2>} />
 			</Switch>
 		</Router>

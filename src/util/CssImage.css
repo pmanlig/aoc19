@@ -1,4 +1,4 @@
-.hull-grid {
+.css-image {
 	background-color: white;
 	display: inline-flex;
 	flex-direction: column;
@@ -7,7 +7,7 @@
 	border: 1px solid red;
 }
 
-.hull-row {
+.css-image-row {
 	background-color: white;
 	border: none;
 	display: inline-flex;
@@ -16,22 +16,11 @@
 	padding: 0;
 }
 
-.hull-black {
+.css-image-pixel {
 	min-height: 10px;
 	min-width: 10px;
 	display: inline;
 	border: none;
-	background-color: black;
-	margin: 0;
-	padding: 0;
-}
-
-.hull-white {
-	min-height: 10px;
-	min-width: 10px;
-	border: none;
-	display: inline;
-	background-color: white;
 	margin: 0;
 	padding: 0;
 }

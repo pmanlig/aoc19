@@ -95,8 +95,8 @@ export class S10a extends Solver {
 
 	drawAsteroids(ctx) {
 		let { result } = this.state;
-		drawCircle(ctx, this.convert(result.x), this.convert(result.y), 3, "#000000");
-		this.state.result.destroyOrder.forEach(d => drawCircle(ctx, this.convert(d.x), this.convert(d.y), 3, "#000000"));
+		drawCircle(ctx, this.convert(result.x), this.convert(result.y), 1, "#000000");
+		this.state.result.destroyOrder.forEach(d => drawCircle(ctx, this.convert(d.x), this.convert(d.y), 1, "#000000"));
 	}
 
 	drawBase(ctx) {

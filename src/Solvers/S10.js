@@ -131,35 +131,37 @@ export class S10a extends Solver {
 	}
 
 	updatePhase() {
-		let { map, phase, destroyed, result, count } = this.state;
-		const ctx = this.refs.canvas.getContext('2d');
-		ctx.clearRect(0, 0, map[0].length * this.scaling, map.length * this.scaling);
-		if (phase > 0) this.drawBase(ctx);
-		this.drawAsteroids(ctx);
-		switch (phase) {
-			case 0:
-				this.setState({ phase: 1, text: "Asteroids mapped - deploying base", blink: false });
-				setTimeout(() => this.updatePhase(), 1000)
-				break;
-			case 1:
-				this.setState({ phase: 2, text: "Base deployed - calculating fire solution", blink: true });
-				setTimeout(() => this.updatePhase(), 1000)
-				break;
-			case 2:
-				if (!destroyed) destroyed = [];
-				this.shoot(ctx);
-				let tgt = result.destroyOrder.shift();
-				map[tgt.y][tgt.x] = 0;
-				destroyed.push(tgt);
-				this.setState({ phase: result.destroyOrder.length > 0 ? 2 : 3, count: count - 1, text: "Firing!!!", blink: true, firing: true, destroyed: destroyed });
-				setTimeout(() => this.updatePhase(), 20);
-				break;
-			case 3:
-				this.setState({ phase: 3, text: "All targets neutralized, sir!", blink: false, firing: false, destroyed: destroyed });
-				break;
-			default:
-				break;
-		}
+		try {
+			let { map, phase, destroyed, result, count } = this.state;
+			const ctx = this.refs.canvas.getContext('2d');
+			ctx.clearRect(0, 0, map[0].length * this.scaling, map.length * this.scaling);
+			if (phase > 0) this.drawBase(ctx);
+			this.drawAsteroids(ctx);
+			switch (phase) {
+				case 0:
+					this.setState({ phase: 1, text: "Asteroids mapped - deploying base", blink: false });
+					setTimeout(() => this.updatePhase(), 1000)
+					break;
+				case 1:
+					this.setState({ phase: 2, text: "Base deployed - calculating fire solution", blink: true });
+					setTimeout(() => this.updatePhase(), 1000)
+					break;
+				case 2:
+					if (!destroyed) destroyed = [];
+					this.shoot(ctx);
+					let tgt = result.destroyOrder.shift();
+					map[tgt.y][tgt.x] = 0;
+					destroyed.push(tgt);
+					this.setState({ phase: result.destroyOrder.length > 0 ? 2 : 3, count: count - 1, text: "Firing!!!", blink: true, firing: true, destroyed: destroyed });
+					setTimeout(() => this.updatePhase(), 20);
+					break;
+				case 3:
+					this.setState({ phase: 3, text: "All targets neutralized, sir!", blink: false, firing: false, destroyed: destroyed });
+					break;
+				default:
+					break;
+			}
+		} catch { }
 	}
 
 	customRender() {

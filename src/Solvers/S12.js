@@ -96,15 +96,6 @@ function renderMoons(moons) {
 	</table>;
 }
 
-export function logMoons(moons) {
-	moons.forEach(m => console.log(m.toString()))
-	console.log(moons.map(m => m.energy()).reduce((t, n) => t + n));
-}
-
-export function hash(moons) {
-	return moons.map(m => "" + m.x + m.y + m.z + m.dx + m.dy + m.dz).reduce((t, n) => t + n);
-}
-
 function initMoons(input) {
 	let moons = input.split("\n").map(m => new Moon(m));
 	moons[0].name = "Io";
@@ -118,15 +109,20 @@ export class S12a extends Solver {
 	calculate(input) {
 		let moons = initMoons(input);
 		let xs = [moons.map(m => m.x.toString()).join("")], ys = [moons.map(m => m.y.toString()).join("")], zs = [moons.map(m => m.z.toString()).join("")];
-		let steps = 0;
-		while (steps++ < 2000000) {
-			moveMoons(moons);
-			xs.push(moons.map(m => m.x.toString()).join(""));
-			ys.push(moons.map(m => m.y.toString()).join(""));
-			zs.push(moons.map(m => m.z.toString()).join(""));
+		let limit = 5000;
+		let px = 0, py = 0, pz = 0;
+		while (px === 0 || py === 0 || pz === 0) {
+			for (let s = Math.max(xs.length, ys.length, zs.length); s < limit; s++) {
+				moveMoons(moons);
+				if (px === 0) xs.push(moons.map(m => m.x.toString()).join(""));
+				if (py === 0) ys.push(moons.map(m => m.y.toString()).join(""));
+				if (pz === 0) zs.push(moons.map(m => m.z.toString()).join(""));
+			}
+			limit *= 2;
+			if (px === 0) px = this.calculatePeriod(xs);
+			if (py === 0) py = this.calculatePeriod(ys);
+			if (pz === 0) pz = this.calculatePeriod(zs);
 		}
-
-		let px = this.calculatePeriod(xs), py = this.calculatePeriod(ys), pz = this.calculatePeriod(zs);
 		// console.log(`px: ${px}, py: ${py}, pz: ${pz}`);
 		// console.log(px * py * pz);
 		let p = px * py * pz;
@@ -142,7 +138,7 @@ export class S12a extends Solver {
 			}
 		});
 		// console.log(`p: ${p}, mx: ${mx}, my: ${my}, mz: ${mz}`);
-		this.setState({ period: p });
+		this.setState({ period: { tot: p, x: px, y: py, z: pz } });
 	}
 
 	calculatePeriod(v) {
@@ -161,6 +157,7 @@ export class S12a extends Solver {
 				p++
 			}
 		}
+		return 0;
 	}
 
 	solve(input) {
@@ -174,11 +171,14 @@ export class S12a extends Solver {
 		let { moons, period } = this.state;
 		if (!moons) return <div></div>;
 		return <div>
-			<p>Total energy: {moons.map(m => m.energy()).reduce((t, n) => t + n)}</p>
+			<p>Total energy after 1000 steps: {moons.map(m => m.energy()).reduce((t, n) => t + n)}</p>
 			<p>&nbsp;</p>
 			{renderMoons(moons)}
 			<p>&nbsp;</p>
-			<p>Period: {period || "Calculating..."}</p>
+			<p>Period: {period ? period.tot : "Calculating..."}</p>
+			{period && <p>Period (X): {period.x}</p>}
+			{period && <p>Period (Y): {period.y}</p>}
+			{period && <p>Period (Z): {period.z}</p>}
 		</div>
 	}
 }

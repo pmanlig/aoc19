@@ -6,13 +6,42 @@ import { Computer } from './IntCode';
 import { drawCircle, drawFilledCircle, drawLine, drawFilledRect } from '../util';
 
 export class S13a extends Solver {
-	pixel_size = 15;
+	pixel_size = 25;
 	stdin = [];
 	stdout = [];
 	screen = [];
 	score = 0;
 	nextInput = 0;
 	cheat = false;
+	colors = [];
+	colorList = [
+		"#CFFFCF",
+		"#00FF00",
+		"#00CF00",
+		"#7F7FFF",
+		"#3F3FFF",
+		"#00007F",
+		"#FF7F7F",
+		"#FF3F3F",
+		"#7F0000",
+		"#3F3FFF",
+		"#CFCF00",
+		"#00CFCF",
+		"#CFCFCF",
+		"#CFFFCF",
+		"#00FF00",
+		"#00CF00",
+		"#7F7FFF",
+		"#3F3FFF",
+		"#00007F",
+		"#FF7F7F",
+		"#FF3F3F",
+		"#7F0000",
+		"#3F3FFF",
+		"#CFCF00",
+		"#00CFCF",
+		"#CFCFCF",
+	];
 	map = ["", "#", "U", "=", "o"];
 	styles = [
 		"empty",
@@ -78,14 +107,15 @@ export class S13a extends Solver {
 			for (let x = 1; x < this.screen[0].length - 1; x++) {
 				switch (this.screen[y][x]) {
 					case 2:
-						drawFilledRect(ctx, this.transform(x - 0.4), this.transform(y - 0.4), this.transform(x + 0.4), this.transform(y + 0.4), "#00CF00");
+						if (!this.colors[y]) { this.colors[y] = this.colorList.shift(); }
+						drawFilledRect(ctx, this.transform(x - 0.4), this.transform(y - 0.2), this.transform(x + 0.4), this.transform(y + 0.2), this.colors[y]);
 						break;
 					case 3:
 						drawLine(ctx, this.transform(x - 0.5), this.transform(y), this.transform(x + 0.5), this.transform(y), "#0000FF", 3);
 						break;
 					case 4:
-						drawFilledCircle(ctx, this.transform(x), this.transform(y), 5, "#CFCF00");
-						drawCircle(ctx, this.transform(x), this.transform(y), 5, "#000000", 1);
+						drawFilledCircle(ctx, this.transform(x), this.transform(y), 3, "#CFCF00");
+						drawCircle(ctx, this.transform(x), this.transform(y), 3, "#000000", 1);
 						break;
 					default:
 						break;
@@ -153,7 +183,7 @@ export class S13a extends Solver {
 	customRender() {
 		return <div className="s13">
 			<div className="status" style={{ width: this.screen[0].length * this.pixel_size + "px" }}><p>Tiles: {this.state.tiles}</p><p>Left:{this.state.current}</p><p>Score: {this.score}</p></div>
-			<canvas id="solution" ref="canvas" width={this.screen[0].length * this.pixel_size} height={this.screen.length * 15} />
+			<canvas id="solution" ref="canvas" width={this.screen[0].length * this.pixel_size} height={this.screen.length * this.pixel_size} />
 			{/*this.renderImage(this.state.output)*/}
 			<div className="controls" style={{ width: this.screen[0].length * this.pixel_size + "px" }}>
 				<div className="spacer"></div>

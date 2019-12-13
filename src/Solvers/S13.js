@@ -66,7 +66,6 @@ export class S13a extends Solver {
 		let output = this.stdout;
 		let screen = this.screen;
 		let score = 0;
-		let count = 0;
 		while (output.length > 0) {
 			let x = output.shift();
 			let y = output.shift();
@@ -75,13 +74,16 @@ export class S13a extends Solver {
 				score = t;
 			} else {
 				if (screen[y] === undefined) screen[y] = [];
-				if (t === 2) count++;
 				if (t === 3) this.paddle = x;
 				if (t === 4) this.ball = x;
 				screen[y][x] = t;
 			}
 		}
-		return { score: score, blocks: count };
+		return score;
+	}
+
+	blockCount() {
+		return this.screen.map(r => r.filter(c => c === 2).length).reduce((t, n) => t + n);
 	}
 
 	drawWalls() {
@@ -127,7 +129,8 @@ export class S13a extends Solver {
 	solve(input) {
 		this.computer = new Computer(input, this.stdin, this.stdout);
 		let res = this.computer.run();
-		let { blocks } = this.updateScreen();
+		this.updateScreen();
+		let blocks = this.blockCount();
 		setTimeout(() => this.drawWalls(), 10);
 		setTimeout(() => this.drawGame(), 10);
 		this.setState({
@@ -160,11 +163,11 @@ export class S13a extends Solver {
 
 	move() {
 		let result = this.computer.run();
-		let { score, blocks } = this.updateScreen();
+		let score = this.updateScreen();
 		this.drawGame();
 		if (score !== 0) this.score = score;
 		this.setState({
-			current: blocks,
+			current: this.blockCount(),
 			result: result
 		});
 		if (result === 1)

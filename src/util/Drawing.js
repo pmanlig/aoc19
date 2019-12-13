@@ -21,3 +21,8 @@ export function drawLine(ctx, x1, y1, x2, y2, style, lineWidth) {
 	ctx.lineTo(x2, y2);
 	ctx.stroke();
 }
+
+export function drawFilledRect(ctx, x1, y1, x2, y2, style) {
+	if (style) ctx.fillStyle = style;
+	ctx.fillRect(x1, y1, x2 - x1, y2 - y1);
+}

@@ -1,0 +1,46 @@
+.s13 .status {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+.s13 .status p {
+	display: inline;
+}
+
+.s13 .css-image-pixel {
+	min-height: 20px;
+	max-height: 20px;
+	min-width: 15px;
+	max-width: 15px;
+	text-align: center;
+}
+
+.s13 .controls {
+	display: flex;
+	flex-direction: row;
+}
+
+.s13 .spacer {
+	flex-grow: 1;
+}
+
+.s13 .empty {
+	background-color: black;
+}
+
+.s13 .wall {
+	background-color: red;
+}
+
+.s13 .block {
+	background-color: green;
+}
+
+.s13 .ball {
+	background-color: yellow;
+}
+
+.s13 .paddle {
+	background-color: white;
+}

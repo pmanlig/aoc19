@@ -1,4 +1,3 @@
-import './S13.css';
 import '../util/CssImage.css';
 import React from 'react';
 import Solver from './Solver';

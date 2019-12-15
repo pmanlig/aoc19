@@ -128,7 +128,7 @@ export class S7a extends Solver {
 	calc(input, phase) {
 		let i = 0;
 		for (var p = 0; p < 5; p++) {
-			let c = new Computer(input, [phase[p], i], []);
+			let c = new Computer().init(input, [phase[p], i], []);
 			c.run();
 			i = c.stdout[0];
 		}
@@ -155,11 +155,11 @@ export class S7b extends Solver {
 			p4 = [phase[3]],
 			p5 = [phase[4]];
 		let amps = [
-			new Computer(program, p1, p2),
-			new Computer(program, p2, p3),
-			new Computer(program, p3, p4),
-			new Computer(program, p4, p5),
-			new Computer(program, p5, p1),
+			new Computer().init(program, p1, p2),
+			new Computer().init(program, p2, p3),
+			new Computer().init(program, p3, p4),
+			new Computer().init(program, p4, p5),
+			new Computer().init(program, p5, p1),
 		];
 		while (amps.length > 0) {
 			let amp = amps.shift();

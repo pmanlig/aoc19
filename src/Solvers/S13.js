@@ -126,7 +126,7 @@ export class S13a extends Solver {
 	}
 
 	solve(input) {
-		this.computer = new Computer(input, this.stdin, this.stdout);
+		this.computer = new Computer().init(input, this.stdin, this.stdout);
 		let res = this.computer.run();
 		this.updateScreen();
 		let blocks = this.blockCount();

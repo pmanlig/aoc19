@@ -191,7 +191,7 @@ export class S11a extends Solver {
 		let hull = new Hull();
 		let stdin = [0];
 		let stdout = [];
-		let c = new Computer(input, stdin, stdout);
+		let c = new Computer().init(input, stdin, stdout);
 		let rob = new Robot(100, 100);
 		while (c.run() === 1) {
 			hull.set(rob.x, rob.y, stdout.shift());
@@ -215,7 +215,7 @@ export class S11b extends Solver {
 		hull.set(0, 0, 1);
 		let stdin = [1];
 		let stdout = [];
-		let c = new Computer(input, stdin, stdout);
+		let c = new Computer().init(input, stdin, stdout);
 		let rob = new Robot(0, 0);
 		while (c.run() === 1) {
 			hull.set(rob.x, rob.y, stdout.shift());

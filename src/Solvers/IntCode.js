@@ -89,12 +89,27 @@ export class Computer {
 		this.rbo // 9
 	];
 
-	constructor(program, stdin, stdout) {
-		this.mem = program.split(",").map(c => parseInt(c));
-		this.stdin = stdin;
-		this.stdout = stdout;
+	constructor() {
+		this.mem = [];
+		this.stdin = [];
+		this.stdout = [];
 		this.disass = [];
 		this.ip = 0;
+	}
+
+	init(program, input, output) {
+		this.mem = program.split(",").map(c => parseInt(c));
+		if (input) this.stdin = input;
+		if (output) this.stdout = output;
+		this.ip = 0;
+		return this;
+	}
+
+	copy() {
+		let n = new Computer();
+		n.mem = this.mem.slice();
+		n.ip = this.ip;
+		return n;
 	}
 
 	run() {

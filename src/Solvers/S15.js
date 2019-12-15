@@ -45,10 +45,12 @@ export class S15a extends Solver {
 
 	setPos(x, y, terrain) {
 		this.map.set(x, y, terrain);
-		const ctx = this.refs.canvas.getContext('2d');
-		x = this.transform(x);
-		y = this.transform(y);
-		drawFilledRect(ctx, x, y, x + this.pixel_size, y + this.pixel_size, colors[terrain]);
+		if (this.refs.canvas) {
+			const ctx = this.refs.canvas.getContext('2d');
+			x = this.transform(x);
+			y = this.transform(y);
+			drawFilledRect(ctx, x, y, x + this.pixel_size, y + this.pixel_size, colors[terrain]);
+		}
 	}
 
 	appendPath(p, dir) {
@@ -121,9 +123,7 @@ export class S15a extends Solver {
 
 	solve(input) {
 		this.setPos(0, 0, open);
-		this.paths = [
-			{ comp: new Computer().init(input), pos: { x: 0, y: 0 }, path: [] }
-		];
+		this.paths = [{ comp: new Computer().init(input), pos: { x: 0, y: 0 }, path: [] }];
 		setTimeout(() => this.explore(), 10);
 	}
 

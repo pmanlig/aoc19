@@ -145,7 +145,7 @@ export class S13a extends Solver {
 		this.stdout = [];
 		this.score = 0;
 		this.cheat = cheat;
-		this.computer = new Computer(this.state.program, this.stdin, this.stdout);
+		this.computer = new Computer().init(this.state.program, this.stdin, this.stdout);
 		this.computer.mem[0] = 2;
 		this.move();
 	}

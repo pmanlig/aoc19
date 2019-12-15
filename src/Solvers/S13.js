@@ -185,7 +185,7 @@ export class S13a extends Solver {
 
 	customRender() {
 		return <div className="s13">
-			<div className="status" style={{ width: this.screen[0].length * this.pixel_size + "px" }}><p>Tiles: {this.state.tiles}</p><p>Left:{this.state.current}</p><p>Score: {this.score}</p></div>
+			<div style={{ width: this.screen[0].length * this.pixel_size + "px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}><p>Tiles: {this.state.tiles}</p><p>Left:{this.state.current}</p><p>Score: {this.score}</p></div>
 			<canvas id="solution" ref="canvas" width={this.screen[0].length * this.pixel_size} height={this.screen.length * this.pixel_size} />
 			{/*this.renderImage(this.state.output)*/}
 			<div className="controls" style={{ width: this.screen[0].length * this.pixel_size + "px" }}>

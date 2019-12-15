@@ -102,6 +102,7 @@ export class S13a extends Solver {
 	}
 
 	drawGame() {
+		if (!this.refs.canvas) return;
 		const ctx = this.refs.canvas.getContext('2d');
 		ctx.clearRect(this.pixel_size, this.pixel_size, (this.screen[0].length - 2) * this.pixel_size, (this.screen.length - 1) * this.pixel_size);
 		for (let y = 1; y < this.screen.length; y++) {

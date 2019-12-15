@@ -132,7 +132,7 @@ export class S15a extends Solver {
 		let width = 100;
 		return <div>
 			<p>Shortest path: {this.state.path && this.state.path.path.length}</p>
-			<p>Time to fill: {this.state.fill && this.state.fill.path.length}</p>
+			<p>Time to fill: {this.state.fill && this.state.fill.path.length} minutes</p>
 			{this.map && <canvas id="solution" ref="canvas" width={width * this.pixel_size} height={height * this.pixel_size} />}
 		</div>;
 	}

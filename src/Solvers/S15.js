@@ -37,7 +37,6 @@ class Map {
 
 export class S15a extends Solver {
 	pixel_size = 5;
-	map = new Map();
 
 	transform(c) {
 		return (c + 50) * this.pixel_size;
@@ -122,6 +121,12 @@ export class S15a extends Solver {
 	}
 
 	solve(input) {
+		if (input.length === 0) return;
+		this.map = new Map();
+		if (this.refs.canvas) {
+			const ctx = this.refs.canvas.getContext('2d');
+			ctx.clearRect(0, 0, 100 * this.pixel_size, 100 * this.pixel_size);
+		}
 		this.setPos(0, 0, open);
 		this.paths = [{ comp: new Computer().init(input), pos: { x: 0, y: 0 }, path: [] }];
 		setTimeout(() => this.explore(), 10);

@@ -1,4 +1,4 @@
-// import React from 'react';
+import React from 'react';
 import Solver from './Solver';
 
 function pattern(n, l) {
@@ -37,18 +37,37 @@ export class S16a extends Solver {
 		input = input.split("").map(d => parseInt(d));
 		let offset = parseInt(input.slice(0, 7).join(""));
 		let first8 = fft(input, 100).slice(0, 8).join("");
+		let p = input.length;
+		let scratch = [];
+		scratch[100] = input[p - 1];
+		scratch.fill(input[p - 1], 0, 100);
 		let result = [];
-		for (let n = 0; n < 6; n++) { result = result.concat(input); }
-		let pos = result.length - 33;
-		let off = [0, 1, 2, 3, 4];
-		console.log(result.join(""));
-		for (let i = 0; i < 100; i++) {
-			if (i % 5 in off) console.log(`${i}: ${result[pos]}`);
-			result = fft(result, 1);
+		for (let i = 10000 * p - 2; i >= offset; i--) {
+			scratch[0] = input[i % p];
+			for (let j = 1; j < 101; j++) {
+				scratch[j] = (scratch[j] + scratch[j - 1]) % 10;
+			}
+			if (i - offset < 8 && i - offset > -1) { result[i - offset] = scratch[100]; }
 		}
-		if (0 in off) console.log("100: " + result[pos]);
-		console.log(result.join(""));
-		this.setState({ solution: `Input length: ${input.length}\nFirst 8: ${first8}\nOffset: ${offset}\nMessage: ${result.slice(offset, offset + 8).join("")}` });
+		this.setState({
+			length: input.length,
+			first8: first8,
+			offset: offset,
+			fromEnd: offset - 10000 * input.length,
+			relative: offset / (input.length * 10000),
+			message: result.join("")
+		});
+	}
+
+	customRender() {
+		return <div>
+			<p>Input length: {this.state.length}</p>
+			<p>First 8: {this.state.first8}</p>
+			<p>Offset: {this.state.offset}</p>
+			<p>From end: {this.state.fromEnd}</p>
+			<p>Relative: {this.state.relative}</p>
+			<p>Message: {this.state.message}</p>
+		</div>;
 	}
 }
 

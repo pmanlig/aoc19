@@ -80,18 +80,18 @@ export class S17a extends Solver {
 	}
 
 	consumeLine(c) {
-		while (c.stdout.shift() !== 10);
-		while (c.stdout[0] === 10) c.stdout.shift();
+		while (c.stdout[c.read] !== 10) c.read++;
+		while (c.stdout[c.read] === 10) c.read++;
 	}
 
 	readOutput(c) {
-		if (c.stdout.length > 1) {
-			while ("MFC".includes(String.fromCharCode(c.stdout[0]))) this.consumeLine(c);
+		if (c.read < c.stdout.length - 1) {
+			while ("MFC".includes(String.fromCharCode(c.stdout[c.read]))) this.consumeLine(c);
 			let img = [];
 			for (let y = 0; y < this.state.img.length; y++) {
 				img[y] = [];
 				for (let x = 0; x < this.state.img[y].length; x++) {
-					img[y][x] = String.fromCharCode(c.stdout.shift());
+					img[y][x] = String.fromCharCode(c.stdout[c.read++]);
 				}
 				this.consumeLine(c);
 			}
@@ -100,7 +100,7 @@ export class S17a extends Solver {
 			this.setState({ img: img });
 			setTimeout(() => this.readOutput(c), 20);
 		} else {
-			this.setState({ dust: c.stdout[0] });
+			this.setState({ dust: c.stdout[c.read] });
 		}
 	}
 
@@ -112,6 +112,7 @@ export class S17a extends Solver {
 			c.stdin.push(p.charCodeAt(i));
 		}
 		c.run();
+		c.read = 0;
 		this.readOutput(c);
 	}
 

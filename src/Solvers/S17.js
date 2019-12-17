@@ -45,7 +45,7 @@ export class S17a extends Solver {
 	drawRobot(ctx, x, y, c) {
 		x = Math.floor((x + 0.5) * this.pixel_size);
 		y = Math.floor((y + 0.5) * this.pixel_size);
-		drawFilledCircle(ctx, x, y, 5, "#FFFF7F");
+		drawFilledCircle(ctx, x, y, 5, c === "X" ? "#FF7F7F" : "#FFFF7F");
 		drawCircle(ctx, x, y, 5, "#000000");
 	}
 

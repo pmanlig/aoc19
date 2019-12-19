@@ -247,6 +247,7 @@ export class S18a extends Solver {
 		let map = input.split("\n").map(l => l.split("")).map(l => l.map(c => c === '.' ? ' ' : c));
 		this.setState({ map: map });
 		setTimeout(() => this.drawMap(map), 10);
+		/*
 		let optimal = [
 			["om", "ayx", "Qlg"],
 			["eth", "IZuj", "IDWr", "Fvpn", "Bs"],
@@ -260,8 +261,9 @@ export class S18a extends Solver {
 		let p1 = "omayxlg";
 		let p2 = "ethujrvpns";
 		let p3 = "qi";
+		*/
 		let p4 = "kczdwfb";
-		setTimeout(() => this.calculatePath2(map, p3), 50);
+		setTimeout(() => this.calculatePath2(map, p4), 50);
 	}
 
 	customRender() {

@@ -197,25 +197,81 @@ export class S18a extends Solver {
 		}
 	}
 
+	step(pos, paths, distMap, map, key, result, dir) {
+		let to = { x: pos.x + dir.x, y: pos.y + dir.y };
+		let c = map[to.y][to.x];
+		if ('#' === c) return; // bumped into wall
+		let steps = distMap[pos.y][pos.x] + 1;
+		if (key === c) {
+			if (result.steps === undefined || steps < result.steps) {
+				result.x = to.x;
+				result.y = to.y;
+				result.steps = steps;
+			}
+			return;
+		}
+		let tgtSteps = distMap[to.y][to.x];
+		if (tgtSteps === 0 || steps < tgtSteps) {
+			distMap[to.y][to.x] = steps;
+			paths.push(to);
+		}
+	}
+
+	findShortest(map, pos, key) {
+		let result = {};
+		let dists = [pos];
+		let distMap = map.map(l => l.map(() => 0));
+		while (dists.length > 0) {
+			let p = dists.shift();
+			this.step(p, dists, distMap, map, key, result, north);
+			this.step(p, dists, distMap, map, key, result, south);
+			this.step(p, dists, distMap, map, key, result, east);
+			this.step(p, dists, distMap, map, key, result, west);
+		}
+		return result;
+	}
+
+	calculatePath2(map, order) {
+		let start = this.find(map, '@');
+		let total = 0;
+		let i = 0;
+		while (i < order.length) {
+			start = this.findShortest(map, start, order[i++]);
+			total += start.steps;
+		}
+		this.setState({ total: total });
+	}
+
 	solve(input) {
-		this.keyCount = 1;
 		for (let i = 0; i < input.length; i++) { if (keys.includes(input[i])) this.keyCount++; }
 		let map = input.split("\n").map(l => l.split("")).map(l => l.map(c => c === '.' ? ' ' : c));
-		this.calculatePath(map);
 		this.setState({ map: map });
 		setTimeout(() => this.drawMap(map), 10);
+		let optimal = [
+			["om", "ayx", "Qlg"],
+			["eth", "IZuj", "IDWr", "Fvpn", "Bs"],
+			["Mq", "YXLTHGi"],
+			["kcz", "Jdw", "Rf", "VPNb"]
+		];
+		let t1 = "omayxqlgkczethiujdwrfvpnbs";
+		let t2 = "omayxqlgethikczujdwrfvpnbs";
+		let t3 = "omayxkczqethlgiujdwrfvpnbs";
+		let t4 = "omethqkczayxlgiujdwrfvpnbs";
+		let p1 = "omayxlg";
+		let p2 = "ethujrvpns";
+		let p3 = "qi";
+		let p4 = "kczdwfb";
+		setTimeout(() => this.calculatePath2(map, p3), 50);
 	}
 
 	customRender() {
 		let i = 0;
 		return <div>
-			<div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", width: this.state.map ? `${this.state.map[0].length * this.pixel_size}px` : "" }}>
-				<div>Shortest: {this.state.paths && this.state.paths[0].distance}</div>
-				<div style={{ width: "17em" }}>Path: {this.state.paths && this.state.paths[0].keys}</div>
-			</div>
+			<div>Shortest: {this.state.total}</div>
 			{this.state.map && <canvas id="solution" ref="canvas" width={this.state.map[0].length * this.pixel_size} height={this.state.map.length * this.pixel_size} />}
-			{this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>}
-			{this.state.done && <p>Done!</p>}
+			{
+				this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>
+			}
 		</div>;
 	}
 }

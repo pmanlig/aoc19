@@ -271,12 +271,11 @@ export class S18a extends Solver {
 	}
 
 	customRender() {
-		let i = 0;
 		return <div>
 			<p>Shortest (pt1): {this.state.part1}</p>
 			<p>Shortest (pt2): {this.state.part2}</p>
 			{this.state.map && <canvas id="solution" ref="canvas" width={this.state.map[0].length * this.pixel_size} height={this.state.map.length * this.pixel_size} />}
-			{this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>}
+			{/*this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>*/}
 		</div>;
 	}
 }

@@ -44,8 +44,7 @@ export class S19b extends Solver {
 		return comp.stdout.shift();
 	}
 
-	solve(input) {
-		this.program = input;
+	solve2() {
 		let count = 0, minX = 0, minY = 0;
 		let output = [];
 		let x = 200, y = 400;
@@ -65,13 +64,17 @@ export class S19b extends Solver {
 		this.setState({ pulls: count, output: output, minX: minX, minY: minY });
 	}
 
+	solve(input) {
+		this.program = input;
+		setTimeout(() => this.solve2(), 100);
+	}
+
 	customRender() {
 		let i = 0;
 		return <div>
-			<p>{this.state.pulls} coordinates pulled</p>
 			<p>Min X: {this.state.minX}</p>
 			<p>Min Y: {this.state.minY}</p>
-			{this.state.minX && <p>Value: {10000 * this.state.minX + this.state.minY}</p>}
+			<p>Value: {this.state.minX && 10000 * this.state.minX + this.state.minY}</p>
 			<div style={{ whiteSpace: "pre", fontFamily: "monospace" }}>
 				{this.state.output && this.state.output.map(l => <p key={i++}>{l.join("")}</p>)}
 			</div>

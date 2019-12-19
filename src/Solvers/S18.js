@@ -239,7 +239,8 @@ export class S18a extends Solver {
 			start = this.findShortest(map, start, order[i++]);
 			total += start.steps;
 		}
-		this.setState({ total: total });
+		return total;
+		// this.setState({ total: total });
 	}
 
 	solve(input) {
@@ -257,23 +258,25 @@ export class S18a extends Solver {
 		let t1 = "omayxqlgkczethiujdwrfvpnbs";
 		let t2 = "omayxqlgethikczujdwrfvpnbs";
 		let t3 = "omayxkczqethlgiujdwrfvpnbs";
+		*/
 		let t4 = "omethqkczayxlgiujdwrfvpnbs";
 		let p1 = "omayxlg";
 		let p2 = "ethujrvpns";
 		let p3 = "qi";
-		*/
 		let p4 = "kczdwfb";
-		setTimeout(() => this.calculatePath2(map, p4), 50);
+		this.setState({
+			part1: this.calculatePath2(map, t4),
+			part2: this.calculatePath2(map, p1) + this.calculatePath2(map, p2) + this.calculatePath2(map, p3) + this.calculatePath2(map, p4) - 8,
+		});
 	}
 
 	customRender() {
 		let i = 0;
 		return <div>
-			<div>Shortest: {this.state.total}</div>
+			<p>Shortest (pt1): {this.state.part1}</p>
+			<p>Shortest (pt2): {this.state.part2}</p>
 			{this.state.map && <canvas id="solution" ref="canvas" width={this.state.map[0].length * this.pixel_size} height={this.state.map.length * this.pixel_size} />}
-			{
-				this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>
-			}
+			{this.state.map && <div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>{this.state.map.map(l => <p key={i++}>{l.join("")}</p>)}</div>}
 		</div>;
 	}
 }

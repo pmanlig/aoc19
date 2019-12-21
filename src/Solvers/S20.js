@@ -152,6 +152,7 @@ export class S20a extends Solver {
 
 	drawSegment(coords) {
 		if (coords.length === 1) return;
+		if (!this.refs.canvas) return;
 
 		let coord = coords.shift();
 		let dist = Math.abs(coord.x - coords[0].x) + Math.abs(coord.y - coords[0].y);

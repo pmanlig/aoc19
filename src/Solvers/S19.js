@@ -12,19 +12,33 @@ export class S19a extends Solver {
 	}
 
 	solve2() {
+		let ctx = this.refs.canvas.getContext('2d');
 		let x = 100, y = 0;
 		while (true) {
-			while (this.detect(x, y) === 0) { y++ }
-			while (this.detect(x, y) === 1) { x++ }
+			ctx.fillStyle = "#CFCFCF";
+			while (this.detect(x, y) === 0) {
+				ctx.fillRect(x, y, 1, 1);
+				y++;
+			}
+			ctx.fillStyle = "#CF7FCF";
+			while (this.detect(x, y) === 1) {
+				ctx.fillRect(x, y, 1, 1);
+				x++;
+			}
 			if (this.detect(x - 100, y + 99) === 1) {
-				return { minX: x - 100, minY: y };
+				this.setState({ minX: x - 100, minY: y });
+				ctx.fillRect(x - 100, y, 100, 100);
+				return;
+			} else {
+				ctx.fillStyle = "#CFCFCF";
+				ctx.fillRect(x - 100, y + 99, 1, 1);
 			}
 		}
 	}
 
 	solve(input) {
 		let count = 0;
-		let output = "";
+		let ctx = this.refs.canvas.getContext('2d');
 		for (let y = 0; y < 50; y++) {
 			for (let x = 0; x < 50; x++) {
 				let comp = new Computer().init(input);
@@ -34,16 +48,17 @@ export class S19a extends Solver {
 				let res = comp.stdout.shift();
 				if (res === 1) {
 					count++;
-					output += "#";
+					ctx.fillStyle = "#CF7FCF";
 				}
-				if (res === 0) output += (".");
+				if (res === 0) {
+					ctx.fillStyle = "#CFCFCF";
+				}
+				ctx.fillRect(x, y, 1, 1);
 			}
-			output += "\n";
 		}
 		this.program = input;
-		let pos = this.solve2();
-		console.log(pos);
-		this.setState({ pulls: count, output: output, minX: pos.minX, minY: pos.minY });
+		this.setState({ pulls: count });
+		setTimeout(() => this.solve2(), 10);
 	}
 
 	customRender() {
@@ -53,9 +68,8 @@ export class S19a extends Solver {
 			<p>Min X: {this.state.minX}</p>
 			<p>Min Y: {this.state.minY}</p>
 			<p>Value: {this.state.minX && 10000 * this.state.minX + this.state.minY}</p>
-			<div style={{ whiteSpace: "pre", fontFamily: "monospace" }}>
-				{this.state.output && this.state.output.split("\n").map(l => <p key={i++}>{l}</p>)}
-			</div>
+			<canvas id="solution" ref="canvas" style={{ margin: "10px" }} width="1100" height="1100" />
+			{/*<div style={{ whiteSpace: "pre", fontFamily: "monospace" }}>{this.state.output && this.state.output.split("\n").map(l => <p key={i++}>{l}</p>)}</div>*/}
 		</div>;
 	}
 }

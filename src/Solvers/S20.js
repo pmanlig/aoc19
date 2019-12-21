@@ -18,6 +18,11 @@ const west = { x: -1, y: 0 };
 const directions = [north, south, east, west];
 const pixel_size = 5;
 
+const colors = [
+	{ char: '#', color: [0, 0, 0, 255] },
+	{ char: '.', color: [0xcf, 0xcf, 0xcf, 255] },
+]
+
 export class S20a extends Solver {
 	findPortals(map) {
 		let portals = {};
@@ -53,6 +58,7 @@ export class S20a extends Solver {
 
 	tryMove(path, dir, map, distMap, paths, recurse) {
 		let n = { x: path.x + dir.x, y: path.y + dir.y, steps: path.steps + 1, lvl: path.lvl };
+		if (!recurse) n.prev = path;
 		let c = map[n.y][n.x];
 		if (typeof (c) === "object") {
 			if (recurse) {
@@ -90,7 +96,7 @@ export class S20a extends Solver {
 		while (paths.length > 0) {
 			let p = paths.shift();
 			if (p.x === stop.x && p.y === stop.y) {
-				return p.steps - 2;
+				return p;
 			}
 			directions.forEach(d => {
 				this.tryMove(p, d, map, distMap, paths, recurse);
@@ -99,12 +105,86 @@ export class S20a extends Solver {
 		}
 	}
 
+	drawMap(map) {
+		const ctx = this.refs.canvas.getContext('2d');
+		ctx.clearRect(0, 0, map[0].length * pixel_size, map.length * pixel_size);
+		for (let y = 1; y < map.length - 1; y++) {
+			for (let x = 1; x < map[y].length - 1; x++) {
+				let c = map[y][x];
+				if (c === '#' || c === '.') {
+					ctx.fillStyle = "#000000";
+					if (c === '.') ctx.fillStyle = "#CFCFCF";
+					ctx.fillRect(x * pixel_size, y * pixel_size, pixel_size, pixel_size);
+				}
+				if (typeof (c) === "object") {
+					ctx.fillStyle = "#7F7FCF";
+					ctx.beginPath();
+					ctx.arc((x + 0.5) * pixel_size, (y + 0.5) * pixel_size, pixel_size / 2, 0, 2 * Math.PI);
+					ctx.fill();
+				}
+				if (c === 'A' || c === 'Z') {
+					ctx.fillStyle = "#FF0000";
+					if (c === 'Z') ctx.fillStyle = "#00FF00";
+					ctx.beginPath();
+					if (x === 1) {
+						ctx.moveTo(x * pixel_size, y * pixel_size);
+						ctx.lineTo((x + 1) * pixel_size, (y + 0.5) * pixel_size);
+						ctx.lineTo(x * pixel_size, (y + 1) * pixel_size);
+					} else if (x === map[y].length - 2) {
+						ctx.moveTo((x + 1) * pixel_size, y * pixel_size);
+						ctx.lineTo(x * pixel_size, (y + 0.5) * pixel_size);
+						ctx.lineTo((x + 1) * pixel_size, (y + 1) * pixel_size);
+					} else if (y === 1) {
+						ctx.moveTo(x * pixel_size, y * pixel_size);
+						ctx.lineTo((x + 0.5) * pixel_size, (y + 1) * pixel_size);
+						ctx.lineTo((x + 1) * pixel_size, y * pixel_size);
+					} else if (y === map.length - 2) {
+						ctx.moveTo(x * pixel_size, (y + 1) * pixel_size);
+						ctx.lineTo((x + 0.5) * pixel_size, y * pixel_size);
+						ctx.lineTo((x + 1) * pixel_size, (y + 1) * pixel_size);
+					}
+					ctx.closePath();
+					ctx.fill();
+				}
+			}
+		}
+	}
+
+	drawSegment(coords) {
+		if (coords.length === 1) return;
+
+		let coord = coords.shift();
+		let dist = Math.abs(coord.x - coords[0].x) + Math.abs(coord.y - coords[0].y);
+		if (dist === pixel_size) {
+			const ctx = this.refs.canvas.getContext('2d');
+			ctx.strokeStyle = "#FF0000";
+			ctx.beginPath();
+			ctx.moveTo(coord.x, coord.y);
+			ctx.lineTo(coords[0].x, coords[0].y);
+			ctx.stroke();
+		}
+		setTimeout(() => this.drawSegment(coords), 50);
+	}
+
+	drawPath(path) {
+		let coords = [];
+		while (path.prev) {
+			coords.unshift(path);
+			path = path.prev;
+		}
+		coords = coords.map(c => { return { x: (c.x + 0.5) * pixel_size, y: (c.y + 0.5) * pixel_size } });
+		this.drawSegment(coords);
+	}
+
 	solveRecursive(map, portals) {
-		this.setState({ recurse: this.findPath(map, portals["AA"][0], portals["ZZ"][0], true) });
+		this.setState({ recurse: this.findPath(map, portals["AA"][0], portals["ZZ"][0], true).steps - 2 });
 	}
 
 	solveNonRecursive(map, portals) {
-		this.setState({ path: this.findPath(map, portals["AA"][0], portals["ZZ"][0], false) });
+		this.drawMap(map);
+		let path = this.findPath(map, portals["AA"][0], portals["ZZ"][0], false);
+		this.setState({ path: path.steps - 2 });
+		setTimeout(() => this.drawPath(path), 100);
 		setTimeout(() => this.solveRecursive(map, portals), 10);
 	}
 
@@ -117,11 +197,13 @@ export class S20a extends Solver {
 
 	customRender() {
 		let i = 0;
+		let map = this.state.map;
 		return <div>
 			<p>Distance non-recursive: {this.state.path}</p>
 			<p>Distance recursive: {this.state.recurse}</p>
 			<div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>
-				{this.state.map && this.state.map.map(l => <p key={i++}>{l.map(c => typeof (c) === "object" ? '@' : c).join("")}</p>)}
+				{map && <canvas id="solution" ref="canvas" width={map[0].length * pixel_size} height={map.length * pixel_size} />}
+				{/*map && map.map(l => <p key={i++}>{l.map(c => typeof (c) === "object" ? '@' : c).join("")}</p>)*/}
 			</div>
 		</div>;
 	}

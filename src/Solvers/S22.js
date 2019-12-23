@@ -1,7 +1,7 @@
 import React from 'react';
 import Solver from './Solver';
 
-export function newDeck(n) {
+function newDeck(n) {
 	let deck = [];
 	deck[n - 1] = n - 1;
 	for (let i = 0; i < n - 2; i++) {
@@ -101,48 +101,7 @@ function computeMatrix(a, b, n, m) {
 }
 
 export class S22a extends Solver {
-	solve(input) {
-		this.setState({ solution: `Index of card 2019: ${shuffleCard(2019, 10007, input.split("\n"))}` });
-	}
-}
-
-export class S22b extends Solver {
-	findPeriod(input, count) {
-		for (let n = 0; n < 100000; n++) {
-			for (let i = 0; i < input.length; i++) { input[i](); }
-			count++;
-			if (this.pos === 2020) {
-				console.log(count);
-				this.setState({ period: count });
-				return;
-			}
-		}
-		this.setState({ count: count });
-		if (count < this.shuffles)
-			setTimeout(() => this.findPeriod(input, count), 1);
-	}
-
-	findAnswer(x, count, mul, add, deck, want) {
-		for (let i = 0; i < 1000000; i++) {
-			x = longMul(x, mul, deck);
-			x = (x + add) % deck;
-			count++;
-			if (x === want) {
-				this.setState({ answer: count });
-				return;
-			}
-		}
-		this.setState({ count: count });
-		if (count < this.deckLength)
-			setTimeout(() => this.findAnswer(x, count, mul, add, deck), 0);
-	}
-
 	test(input) {
-		/* Forward
-		let rev = () => { mul *= -1; add *= -1; add--; }
-		let deal = i => { mul *= i; add *= i; mul = mul % d; add = add % d; }
-		let cut = i => { add += -i; add = add % d; }
-		*/
 		let len = 10007;
 		let n = 5;
 		let mul = 1;
@@ -166,8 +125,21 @@ export class S22b extends Solver {
 		console.log(`Computed card is: ${card}`);
 	}
 
-	solve(input) {
-		this.test(input);
+	solve1(input) {
+		let len = 10007;
+		let mul = 1;
+		let add = 0;
+		let rev = () => { mul *= -1; add *= -1; add--; }
+		let deal = i => { mul *= i; add *= i; mul = mul % len; add = add % len; }
+		let cut = i => { add += -i; add = add % len; }
+		input = input.split("\n");
+		for (let i = 0; i < input.length; i++) { reorder(input[i], rev, deal, cut) }
+		let pos = (longMul(mul, 2019, len) + add) % len;
+		if (pos < 0) { pos += len; }
+		return pos;
+	}
+
+	solve2(input) {
 		let len = 119315717514047;
 		let n = 101741582076661;
 		let mul = 1;
@@ -182,18 +154,24 @@ export class S22b extends Solver {
 		input = input.split("\n");
 		input.reverse();
 		for (let i = 0; i < input.length; i++) { reorder(input[i], rev, deal, cut) }
-		console.log(`Multiplier: ${mul}`);
-		console.log(`Addition: ${add}`);
+		console.log(`Multiplier per iteration: ${mul}`);
+		console.log(`Addition per iteration: ${add}`);
 		let m = computeMatrix(mul, add, n, len);
-		console.log(m);
+		console.log(`Multiplier for n iterations: ${m.a}`);
+		console.log(`Addition for n iterations: ${m.b}`);
 		let card = (longMul(2020, m.a, len) + m.b) % len;
 		if (card < 0) card += len;
-		this.setState({ answer: card });
+		return card;
 	}
 
-	customRender() {
-		return <div>
-			{this.state.answer && <p>Answer: {this.state.answer}</p>}
-		</div>;
+	solve(input) {
+		// this.test(input);
+		let pt1 = this.solve1(input);
+		let pt2 = this.solve2(input);
+		this.setState({ solution: `Index of card 2019: ${pt1}\nCard in position 2020: ${pt2}` });
 	}
+}
+
+export class S22b extends Solver {
+	static hide = true;
 }

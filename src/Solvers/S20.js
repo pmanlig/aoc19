@@ -18,11 +18,6 @@ const west = { x: -1, y: 0 };
 const directions = [north, south, east, west];
 const pixel_size = 5;
 
-const colors = [
-	{ char: '#', color: [0, 0, 0, 255] },
-	{ char: '.', color: [0xcf, 0xcf, 0xcf, 255] },
-]
-
 export class S20a extends Solver {
 	findPortals(map) {
 		let portals = {};
@@ -197,14 +192,12 @@ export class S20a extends Solver {
 	}
 
 	customRender() {
-		let i = 0;
 		let map = this.state.map;
 		return <div>
 			<p>Distance non-recursive: {this.state.path}</p>
 			<p>Distance recursive: {this.state.recurse}</p>
 			<div style={{ fontFamily: "monospace", whiteSpace: "pre" }}>
 				{map && <canvas id="solution" ref="canvas" width={map[0].length * pixel_size} height={map.length * pixel_size} />}
-				{/*map && map.map(l => <p key={i++}>{l.map(c => typeof (c) === "object" ? '@' : c).join("")}</p>)*/}
 			</div>
 		</div>;
 	}

@@ -62,14 +62,12 @@ export class S19a extends Solver {
 	}
 
 	customRender() {
-		let i = 0;
 		return <div>
 			<p>{this.state.pulls} coordinates pulled</p>
 			<p>Min X: {this.state.minX}</p>
 			<p>Min Y: {this.state.minY}</p>
 			<p>Value: {this.state.minX && 10000 * this.state.minX + this.state.minY}</p>
 			<canvas id="solution" ref="canvas" style={{ margin: "10px" }} width="1100" height="1100" />
-			{/*<div style={{ whiteSpace: "pre", fontFamily: "monospace" }}>{this.state.output && this.state.output.split("\n").map(l => <p key={i++}>{l}</p>)}</div>*/}
 		</div>;
 	}
 }

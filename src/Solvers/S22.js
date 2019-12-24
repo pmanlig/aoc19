@@ -1,4 +1,4 @@
-import React from 'react';
+// import React from 'react';
 import Solver from './Solver';
 
 function newDeck(n) {
@@ -29,7 +29,7 @@ function reorder(step, rev, deal, cut) {
 	if (step.startsWith("cut ")) cut(parseInt(step.substring(4), 10));
 }
 
-export function shuffle(deck, input) {
+function shuffle(deck, input) {
 	let rev = () => deck.reverse();
 	let deal = i => { deck = dealWithIncrement(deck, i) }
 	let cut = i => { deck = cutDeck(deck, i) }
@@ -37,17 +37,6 @@ export function shuffle(deck, input) {
 		reorder(input[i], rev, deal, cut);
 	}
 	return deck;
-}
-
-function shuffleCard(card, deckLength, input) {
-	let pos = card;
-	let rev = () => { pos = deckLength - pos - 1 }
-	let deal = i => { pos = (pos * i) % deckLength }
-	let cut = i => { pos = (pos - i + deckLength) % deckLength }
-	for (let i = 0; i < input.length; i++) {
-		reorder(input[i], rev, deal, cut);
-	}
-	return pos;
 }
 
 function longMul(a, b, m) {

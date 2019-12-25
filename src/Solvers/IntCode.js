@@ -108,6 +108,7 @@ export class Computer {
 	copy() {
 		let n = new Computer();
 		n.mem = this.mem.slice();
+		n.relative_base = this.relative_base;
 		n.ip = this.ip;
 		return n;
 	}
@@ -115,7 +116,7 @@ export class Computer {
 	run() {
 		while (this.mem[this.ip] !== 99) {
 			let opcode = this.mem[this.ip];
-			if (opcode === 3 && this.stdin.length === 0) return 1;
+			if (opcode % 100 === 3 && this.stdin.length === 0) return 1;
 			let op = this.instr[opcode % 100];
 			let a = this.mem[this.ip + 1];
 			let b = this.mem[this.ip + 2];
@@ -126,8 +127,7 @@ export class Computer {
 			if (opcode % 10000 > 1999) { b += this.relative_base; if (op.p[1]) { b = this.mem[b]; } }
 			if (opcode % 100000 < 10000 && op.p[2]) c = this.mem[c];
 			if (opcode % 100000 > 19999) { c += this.relative_base; if (op.p[2]) { c = this.mem[c]; } }
-			// console.log(op.debug(ip, a, b, c));
-			// this.disass.push(op.debug(this.ip, a, b, c));
+			if (this.debug) { console.log(op.debug(this.ip, a, b, c)); }
 			this.ip = op.op(this.ip, a, b, c);
 		}
 		return 0;

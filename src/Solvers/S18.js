@@ -281,5 +281,4 @@ export class S18a extends Solver {
 }
 
 export class S18b extends Solver {
-	static hide = true;
 }

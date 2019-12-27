@@ -107,5 +107,4 @@ export class S4a extends Solver {
 }
 
 export class S4b extends Solver {
-	static hide = true;
 }

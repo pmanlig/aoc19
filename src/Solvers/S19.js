@@ -73,5 +73,4 @@ export class S19a extends Solver {
 }
 
 export class S19b extends Solver {
-	static hide = true;
 }

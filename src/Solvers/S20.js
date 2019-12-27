@@ -204,5 +204,4 @@ export class S20a extends Solver {
 }
 
 export class S20b extends Solver {
-	static hide = true;
 }

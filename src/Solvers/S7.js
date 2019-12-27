@@ -27,20 +27,7 @@ export class S7a extends Solver {
 		return i;
 	}
 
-	solve(input) {
-		let res = 0;
-		let phase = [0, 1, 2, 3, 4];
-		combine(phase, x => {
-			let p = this.calc(input, x);
-			if (p > res) res = p;
-		});
-
-		this.setState({ solution: res });
-	}
-}
-
-export class S7b extends Solver {
-	calc(program, phase) {
+	calc2(program, phase) {
 		let p1 = [phase[0], 0],
 			p2 = [phase[1]],
 			p3 = [phase[2]],
@@ -62,12 +49,23 @@ export class S7b extends Solver {
 
 	solve(input) {
 		let res = 0;
-		let phase = [5, 6, 7, 8, 9];
+		let phase = [0, 1, 2, 3, 4];
 		combine(phase, x => {
 			let p = this.calc(input, x);
-			console.log(`[${x.join()}] => ${p}`);
 			if (p > res) res = p;
 		});
-		this.setState({ solution: res });
+
+		let res2 = 0;
+		let phase2 = [5, 6, 7, 8, 9];
+		combine(phase2, x => {
+			let p = this.calc2(input, x);
+			console.log(`[${x.join()}] => ${p}`);
+			if (p > res2) res2 = p;
+		});
+
+		this.setState({ solution: `Maximum signal: ${res}\nMaximum signal with feedback loop: ${res2}` });
 	}
+}
+
+export class S7b extends Solver {
 }

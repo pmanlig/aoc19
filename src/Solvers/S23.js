@@ -51,5 +51,4 @@ export class S23a extends Solver {
 }
 
 export class S23b extends Solver {
-	static hide = true;
 }

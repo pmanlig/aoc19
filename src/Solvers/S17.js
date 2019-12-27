@@ -143,5 +143,4 @@ export class S17a extends Solver {
 }
 
 export class S17b extends Solver {
-	static hide = true;
 }

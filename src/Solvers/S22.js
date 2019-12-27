@@ -162,5 +162,4 @@ export class S22a extends Solver {
 }
 
 export class S22b extends Solver {
-	static hide = true;
 }

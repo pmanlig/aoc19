@@ -89,5 +89,4 @@ export class S14a extends Solver {
 }
 
 export class S14b extends Solver {
-	static hide = true;
 }

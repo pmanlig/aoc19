@@ -3,6 +3,8 @@
 	text-align: left;
 	display: flex;
 	flex-direction: column;
+	max-width: 25vw;
+	max-height: calc(94vh - 40px);
 }
 
 .input textarea {

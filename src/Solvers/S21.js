@@ -50,5 +50,4 @@ export class S21a extends Solver {
 }
 
 export class S21b extends Solver {
-	static hide = true;
 }

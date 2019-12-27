@@ -144,5 +144,4 @@ export class S15a extends Solver {
 }
 
 export class S15b extends Solver {
-	static hide = true;
 }

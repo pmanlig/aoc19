@@ -56,8 +56,8 @@ export class Solution extends React.Component {
 			<div className="solution">
 				<div className="data">
 					<Input value={input || ""} onChange={e => this.setState({ input: e.target.value })} />
-					{s ? <s.a header={s.b.hide ? "Solution:" : "Part 1:"} input={input} /> : <div className="part1">part1</div>}
-					{s ? !s.b.hide && <s.b header="Part 2:" input={input} /> : <div className="part2">part1</div>}
+					{s ? <s.a header={s.b.prototype.solve ? "Part 1:" : "Solution:"} input={input} /> : <div className="part1">part1</div>}
+					{s && s.b.prototype.solve && <s.b header="Part 2:" input={input} />}
 				</div>
 			</div>
 		</div>

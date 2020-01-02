@@ -154,12 +154,13 @@ export class S20a extends Solver {
 		if (dist === pixel_size) {
 			const ctx = this.refs.canvas.getContext('2d');
 			ctx.strokeStyle = "#FF0000";
+			ctx.lineWidth = 3;
 			ctx.beginPath();
 			ctx.moveTo(coord.x, coord.y);
 			ctx.lineTo(coords[0].x, coords[0].y);
 			ctx.stroke();
 		}
-		setTimeout(() => this.drawSegment(coords), 50);
+		setTimeout(() => this.drawSegment(coords), 25);
 	}
 
 	drawPath(path) {
